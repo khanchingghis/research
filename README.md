@@ -1,7 +1,7 @@
 # research
 
-## US-Iran Conflict: Finance & Economics Analysis
+A simple notebook for general research topics.
 
-A comprehensive analysis of the US-Iran military conflict (2025-2026) from a finance and economics perspective, including market impacts across asset classes (oil, equities, bonds, currencies, gold) and forward-looking predictions.
+## Contents
 
-See the full report: [us-iran-conflict-finance-economics-analysis.md](us-iran-conflict-finance-economics-analysis.md)
+- [US-Iran Conflict: Finance & Economics Analysis](us-iran-conflict-finance-economics-analysis.md)
