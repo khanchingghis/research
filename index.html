@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>US-Iran Conflict: Finance &amp; Economics Dashboard</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #232733;
+    --border: #2e3345;
+    --text: #e4e6ed;
+    --text-muted: #8b8fa3;
+    --accent: #6c8cff;
+    --red: #ef4444;
+    --green: #22c55e;
+    --amber: #f59e0b;
+    --cyan: #06b6d4;
+    --purple: #a78bfa;
+    --pink: #f472b6;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  header {
+    padding: 2rem 2rem 1rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  header h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  header p {
+    color: var(--text-muted);
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+  }
+
+  .tab-bar {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    gap: 0.25rem;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tab-bar::-webkit-scrollbar { display: none; }
+
+  .tab-btn {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 0.8125rem;
+    padding: 0.625rem 1rem;
+    cursor: pointer;
+    white-space: nowrap;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  .tab-btn:hover { color: var(--text); }
+  .tab-btn.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+  }
+
+  main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 1.5rem 2rem 3rem;
+  }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  .grid {
+    display: grid;
+    gap: 1rem;
+  }
+  .grid-4 { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+  .grid-3 { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+  .grid-2 { grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+    padding: 1.25rem;
+  }
+
+  .stat-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+  .stat-card .label {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .stat-card .value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  .stat-card .change {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+  .stat-card .sub {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+  }
+  .up { color: var(--green); }
+  .down { color: var(--red); }
+  .warn { color: var(--amber); }
+  .neutral { color: var(--cyan); }
+
+  .section-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin: 1.75rem 0 0.75rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .section-title:first-child { margin-top: 0; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8125rem;
+  }
+  th {
+    text-align: left;
+    padding: 0.625rem 0.75rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  td {
+    padding: 0.625rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: var(--surface2); }
+
+  .badge {
+    display: inline-block;
+    padding: 0.125rem 0.5rem;
+    border-radius: 999px;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+  .badge-red { background: rgba(239,68,68,0.15); color: var(--red); }
+  .badge-green { background: rgba(34,197,94,0.15); color: var(--green); }
+  .badge-amber { background: rgba(245,158,11,0.15); color: var(--amber); }
+  .badge-cyan { background: rgba(6,182,212,0.15); color: var(--cyan); }
+
+  .bar-chart { margin-top: 0.5rem; }
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+  .bar-label {
+    flex: 0 0 100px;
+    font-size: 0.8125rem;
+    text-align: right;
+    color: var(--text-muted);
+  }
+  .bar-track {
+    flex: 1;
+    height: 24px;
+    background: var(--surface2);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    display: flex;
+    align-items: center;
+    padding-left: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #fff;
+    white-space: nowrap;
+  }
+
+  .timeline {
+    position: relative;
+    padding-left: 1.5rem;
+  }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 4px;
+    bottom: 4px;
+    width: 2px;
+    background: var(--border);
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 1.25rem;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -1.5rem;
+    top: 6px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--bg);
+  }
+  .timeline-date {
+    font-size: 0.75rem;
+    color: var(--accent);
+    font-weight: 600;
+  }
+  .timeline-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-top: 0.125rem;
+  }
+  .timeline-desc {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+    margin-top: 0.125rem;
+  }
+
+  .pill-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+  }
+  .pill {
+    padding: 0.375rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+  }
+
+  .forecast-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .forecast-row:last-child { border-bottom: none; }
+  .forecast-source {
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+  }
+  .forecast-val {
+    font-size: 1.125rem;
+    font-weight: 700;
+  }
+  .forecast-scenario {
+    font-size: 0.6875rem;
+    color: var(--text-muted);
+  }
+
+  .risk-meter {
+    display: flex;
+    gap: 2px;
+    margin-top: 0.25rem;
+  }
+  .risk-bar {
+    width: 20px;
+    height: 6px;
+    border-radius: 3px;
+    background: var(--surface2);
+  }
+  .risk-bar.filled-green { background: var(--green); }
+  .risk-bar.filled-amber { background: var(--amber); }
+  .risk-bar.filled-red { background: var(--red); }
+
+  .split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  @media (max-width: 768px) {
+    header, main { padding-left: 1rem; padding-right: 1rem; }
+    .tab-bar { padding: 0 1rem; }
+    .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
+    .split { grid-template-columns: 1fr; }
+    .bar-label { flex: 0 0 70px; font-size: 0.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>US-Iran Conflict: Finance &amp; Economics Dashboard</h1>
+  <p>Data as of March 15, 2026 &mdash; "Operation Epic Fury" Impact Analysis</p>
+</header>
+
+<nav class="tab-bar" id="tabBar">
+  <button class="tab-btn active" data-tab="overview">Overview</button>
+  <button class="tab-btn" data-tab="oil">Oil &amp; Energy</button>
+  <button class="tab-btn" data-tab="markets">Financial Markets</button>
+  <button class="tab-btn" data-tab="macro">Macro &amp; Regional</button>
+  <button class="tab-btn" data-tab="sectors">Sectors</button>
+  <button class="tab-btn" data-tab="risks">Risks &amp; Outlook</button>
+  <button class="tab-btn" data-tab="timeline">Timeline</button>
+</nav>
+
+<main>
+  <!-- OVERVIEW -->
+  <div class="tab-panel active" id="panel-overview">
+    <h3 class="section-title">Key Indicators</h3>
+    <div class="grid grid-4" id="overviewStats"></div>
+
+    <h3 class="section-title">Supply Disruption Snapshot</h3>
+    <div class="grid grid-3" id="supplyStats"></div>
+
+    <h3 class="section-title">Market Characterization</h3>
+    <div class="card" style="max-width:700px;">
+      <p style="font-size:0.9375rem; line-height:1.7;">
+        The conflict represents a <strong style="color:var(--amber)">classic stagflationary shock</strong>:
+        simultaneously raising inflation expectations and lowering growth prospects. This is the
+        worst environment for the traditional 60/40 portfolio &mdash; a rare
+        <strong style="color:var(--red)">"stocks and bonds down together"</strong> scenario
+        signaling deep investor anxiety about the inflationary path ahead.
+      </p>
+    </div>
+  </div>
+
+  <!-- OIL & ENERGY -->
+  <div class="tab-panel" id="panel-oil">
+    <h3 class="section-title">Oil Price Action</h3>
+    <div class="grid grid-4" id="oilPrices"></div>
+
+    <h3 class="section-title">Supply Disruption</h3>
+    <div class="card" id="supplyBars"></div>
+
+    <h3 class="section-title">Brent Crude Forecasts</h3>
+    <div class="card" id="oilForecasts"></div>
+
+    <h3 class="section-title">Emergency Response</h3>
+    <div class="card">
+      <div style="display:flex; align-items:baseline; gap:0.75rem;">
+        <span style="font-size:2rem; font-weight:700; color:var(--cyan);">400M</span>
+        <span style="color:var(--text-muted); font-size:0.875rem;">barrels released from IEA strategic reserves (Mar 11) &mdash; largest coordinated release in history</span>
+      </div>
+      <p style="margin-top:0.75rem; font-size:0.8125rem; color:var(--amber);">Covers only ~20 days of disrupted supply if the Strait remains closed.</p>
+    </div>
+  </div>
+
+  <!-- FINANCIAL MARKETS -->
+  <div class="tab-panel" id="panel-markets">
+    <h3 class="section-title">Equities</h3>
+    <div class="grid grid-4" id="equityStats"></div>
+
+    <h3 class="section-title">Fixed Income (Treasuries)</h3>
+    <div class="grid grid-4" id="bondStats"></div>
+    <div class="card" style="margin-top:1rem; max-width:700px;">
+      <p style="font-size:0.8125rem; color:var(--text-muted); margin-bottom:0.5rem;">Why bonds sold off instead of rallying:</p>
+      <ul style="list-style:none; font-size:0.8125rem;" id="bondReasons"></ul>
+    </div>
+
+    <h3 class="section-title">Currencies vs USD</h3>
+    <div class="card" id="currencyBars"></div>
+
+    <h3 class="section-title">Gold</h3>
+    <div class="grid grid-4" id="goldStats"></div>
+    <div class="card" style="margin-top:1rem;">
+      <p style="font-size:0.8125rem; color:var(--text-muted); margin-bottom:0.5rem;">Year-end 2026 Targets</p>
+      <div class="grid grid-3" id="goldTargets"></div>
+    </div>
+  </div>
+
+  <!-- MACRO & REGIONAL -->
+  <div class="tab-panel" id="panel-macro">
+    <h3 class="section-title">Inflation Impact (per 10% oil price increase)</h3>
+    <div class="grid grid-4" id="inflationStats"></div>
+
+    <h3 class="section-title">At $100/bbl Oil Scenario</h3>
+    <div class="grid grid-4" id="scenarioStats"></div>
+
+    <h3 class="section-title">Federal Reserve Dilemma</h3>
+    <div class="card" style="max-width:700px;" id="fedCard"></div>
+
+    <h3 class="section-title">Regional Vulnerability</h3>
+    <div class="grid grid-3" id="regionalCards"></div>
+  </div>
+
+  <!-- SECTORS -->
+  <div class="tab-panel" id="panel-sectors">
+    <div class="split">
+      <div>
+        <h3 class="section-title" style="margin-top:0;">Sector Winners</h3>
+        <div class="card">
+          <table>
+            <thead><tr><th>Sector</th><th>Rationale</th></tr></thead>
+            <tbody id="winnersTable"></tbody>
+          </table>
+        </div>
+      </div>
+      <div>
+        <h3 class="section-title" style="margin-top:0;">Sector Losers</h3>
+        <div class="card">
+          <table>
+            <thead><tr><th>Sector</th><th>Rationale</th></tr></thead>
+            <tbody id="losersTable"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <h3 class="section-title">Investment Strategy</h3>
+    <div class="card">
+      <table>
+        <thead><tr><th>Position</th><th>Strategy</th><th>Rationale</th></tr></thead>
+        <tbody id="strategyTable"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- RISKS & OUTLOOK -->
+  <div class="tab-panel" id="panel-risks">
+    <h3 class="section-title">Key Risks</h3>
+    <div class="card">
+      <table>
+        <thead><tr><th>Risk</th><th>Probability</th><th>Impact</th></tr></thead>
+        <tbody id="risksTable"></tbody>
+      </table>
+    </div>
+
+    <h3 class="section-title">Predictions &mdash; Near-Term (Mar&ndash;Jun 2026)</h3>
+    <div class="grid grid-2" id="nearTerm"></div>
+
+    <h3 class="section-title">Predictions &mdash; Medium-Term (H2 2026)</h3>
+    <div class="grid grid-2" id="medTerm"></div>
+
+    <h3 class="section-title">Long-Term Structural Shifts</h3>
+    <div class="grid grid-2" id="longTerm"></div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="tab-panel" id="panel-timeline">
+    <h3 class="section-title">Conflict Timeline</h3>
+    <div class="card" style="max-width:700px;">
+      <div class="timeline" id="timelineList"></div>
+    </div>
+  </div>
+</main>
+
+<script>
+const DATA = {
+  overview: [
+    { label: 'Brent Crude', value: '$85–92', change: '+16–26%', dir: 'up', sub: 'from ~$73 pre-conflict' },
+    { label: 'WTI Crude', value: '$81.01', change: '+8.51%', dir: 'up', sub: '/bbl' },
+    { label: 'S&P 500', value: '−3%', change: 'from Jan high', dir: 'down', sub: '−1.4% since strikes' },
+    { label: '10Y Treasury', value: '4.23%', change: '+24 bps', dir: 'up', sub: 'yields rising on inflation fear' },
+    { label: '30Y Treasury', value: '4.90%', change: 'rising', dir: 'up', sub: 'unusual sell-off' },
+    { label: 'US Dollar (DXY)', value: '100.35', change: '+1.5–2%', dir: 'up', sub: 'safe-haven strength' },
+    { label: 'Gold', value: '$5,246', change: 'ATH', dir: 'up', sub: '/oz — all-time high' },
+    { label: 'GDP Growth Impact', value: '−0.1 to −0.4pp', change: 'downward revision', dir: 'down', sub: 'depending on oil trajectory' },
+  ],
+  supply: [
+    { label: 'Hormuz Oil Flow', value: '~20%', sub: 'of global supply at risk', dir: 'warn' },
+    { label: 'Gulf Production Cut', value: '10M+ bbl/day', sub: 'shut in', dir: 'down' },
+    { label: 'Military Cost', value: '$831M/day', sub: 'estimated US operations', dir: 'down' },
+  ],
+  oilPrices: [
+    { label: 'Brent Crude', value: '$85–92', change: '+16–26%', dir: 'up', sub: '/bbl' },
+    { label: 'WTI Crude', value: '$81.01', change: '+8.51%', dir: 'up', sub: '/bbl' },
+    { label: 'Diesel', value: '+10%', change: 'rising', dir: 'up', sub: 'from pre-conflict' },
+    { label: 'Gasoline', value: '+4%', change: 'rising', dir: 'up', sub: 'from pre-conflict' },
+  ],
+  supplyDisruptions: [
+    { label: 'Gulf Production', value: 10, max: 20, unit: 'M bbl/day cut', color: 'var(--red)' },
+    { label: 'Iraq', value: 1.5, max: 20, unit: 'M bbl/day cut', color: 'var(--amber)' },
+    { label: 'Refining Offline', value: 3, max: 20, unit: 'M bbl/day', color: 'var(--pink)' },
+    { label: 'Qatar LNG', value: 100, max: 100, unit: '% halted', color: 'var(--purple)' },
+  ],
+  oilForecasts: [
+    { source: 'Goldman Sachs', scenario: 'Base case (Mar-Apr)', value: '$98/bbl', color: 'var(--amber)' },
+    { source: 'Goldman Sachs', scenario: 'Year-end 2026', value: '$71/bbl', color: 'var(--green)' },
+    { source: 'Goldman Sachs', scenario: 'Severe disruption', value: '$110/bbl', color: 'var(--red)' },
+    { source: 'Futures Curve', scenario: 'Normalization', value: 'Aug 2027', color: 'var(--cyan)' },
+    { source: 'Iran Rhetoric', scenario: 'Extreme', value: '$200/bbl', color: 'var(--red)' },
+  ],
+  equities: [
+    { label: 'S&P 500 (from strikes)', value: '−1.4%', dir: 'down', sub: 'since late February' },
+    { label: 'S&P 500 (from Jan high)', value: '−3%', dir: 'down', sub: 'below record' },
+    { label: 'Max Single-Day Drop', value: '−0.9%', dir: 'down', sub: 'on escalation days' },
+    { label: 'CEOs Citing Risk', value: '60%', dir: 'warn', sub: 'geopolitical disruption' },
+  ],
+  bonds: [
+    { label: '10Y Yield', value: '4.23%', change: '+24 bps', dir: 'up', sub: 'from late Feb' },
+    { label: '30Y Yield', value: '4.90%', change: 'rising', dir: 'up', sub: 'inflation fears' },
+  ],
+  bondReasons: [
+    'Inflation shock fears dominate — oil prices feed through to broader inflation',
+    'Fed rate cut expectations pushed out — higher for longer',
+    'Stagflation concerns — worst for duration-heavy portfolios',
+    'Fiscal concerns — $831M/day military costs add to deficit worries',
+  ],
+  currencies: [
+    { label: 'EUR/USD', value: -2.0, note: '$1.14–1.15', color: 'var(--red)' },
+    { label: 'JPY', value: -2.25, note: 'energy import dependence', color: 'var(--red)' },
+    { label: 'INR', value: -2.25, note: 'oil import reliance', color: 'var(--amber)' },
+    { label: 'KRW', value: -2.25, note: 'energy import exposure', color: 'var(--amber)' },
+  ],
+  gold: [
+    { label: 'All-Time High', value: '$5,246/oz', change: '+14%', dir: 'up', sub: 'from $4,600 in Jan' },
+    { label: 'Post-Strike Surge', value: '$5,423', change: 'peak', dir: 'up', sub: 'then pulled back' },
+    { label: 'Trading Range', value: '$5,050–5,200', dir: 'neutral', sub: 'current range' },
+    { label: 'Central Bank Buying', value: '1,100 tons', dir: 'up', sub: 'purchased in 2025' },
+  ],
+  goldTargets: [
+    { source: 'J.P. Morgan', value: '$6,300/oz' },
+    { source: 'Deutsche Bank', value: '$6,000/oz' },
+  ],
+  inflation: [
+    { label: 'Headline PCE', value: '+0.20pp', dir: 'up', sub: 'per 10% oil increase' },
+    { label: 'Core PCE', value: '+0.04pp', dir: 'up', sub: 'per 10% oil increase' },
+  ],
+  scenario100: [
+    { label: 'Global Inflation', value: '+0.7pp', dir: 'up', sub: 'at $100/bbl' },
+    { label: 'Global GDP Growth', value: '−0.4pp', dir: 'down', sub: 'at $100/bbl' },
+  ],
+  fedPressures: [
+    { icon: 'up', text: 'Oil-driven cost increases argue for maintaining or raising rates' },
+    { icon: 'down', text: 'Geopolitical uncertainty and higher energy costs argue for easing' },
+    { icon: 'warn', text: 'Presidential demands for rate cuts conflict with inflation mandate' },
+    { icon: 'down', text: 'Rate cut expectations pushed further out since conflict began' },
+  ],
+  regional: [
+    { region: 'Europe', risk: 'Recession', detail: 'Heavy energy import dependence; EUR/USD revised to 1.14–1.15; Qatar LNG disruption compounds pressure', badge: 'badge-red' },
+    { region: 'China', risk: 'Compound Stress', detail: 'Loss of discounted Iranian oil + US tariffs + real estate collapse; 84% of Hormuz oil goes to Asia', badge: 'badge-amber' },
+    { region: 'Emerging Markets', risk: 'Triple Pressure', detail: 'Higher import bills, currency depreciation, and reduced global demand for their exports', badge: 'badge-amber' },
+  ],
+  winners: [
+    { sector: 'Oil & Gas (US)', reason: 'Higher prices + supply gap from Middle East disruption' },
+    { sector: 'Defense & Aerospace', reason: 'Increased military spending, weapons demand' },
+    { sector: 'Shipping & Tankers', reason: 'Route diversions increase ton-mile demand' },
+    { sector: 'Alternative Energy', reason: 'Renewed urgency for energy independence' },
+    { sector: 'Cybersecurity', reason: 'Elevated threat landscape from state actors' },
+  ],
+  losers: [
+    { sector: 'Airlines', reason: 'Jet fuel costs surge; route disruptions' },
+    { sector: 'Consumer Discretionary', reason: 'Higher energy costs squeeze consumer spending' },
+    { sector: 'Technology (Growth)', reason: 'Rotation to value; higher rates hurt valuations' },
+    { sector: 'Petrochemical/Mfg', reason: 'Input cost inflation' },
+    { sector: 'Tourism & Hospitality', reason: 'Reduced travel, consumer uncertainty' },
+    { sector: 'EM Equities', reason: 'Capital flight to safe havens' },
+  ],
+  strategies: [
+    { pos: 'Overweight', name: 'US Domestic Energy', rationale: 'Supply disruption beneficiary; inflation hedge', badge: 'badge-green' },
+    { pos: 'Overweight', name: 'Defense', rationale: 'Multi-year spending cycle beginning', badge: 'badge-green' },
+    { pos: 'Overweight', name: 'Gold', rationale: 'Structural bull market; geopolitical hedge', badge: 'badge-green' },
+    { pos: 'Underweight', name: 'European Equities', rationale: 'Recession risk from energy costs', badge: 'badge-red' },
+    { pos: 'Underweight', name: 'Long-Duration Bonds', rationale: 'Inflation shock risk; yields may rise further', badge: 'badge-red' },
+    { pos: 'Neutral', name: 'US Equities', rationale: 'Resilient but not immune; rotation favors value', badge: 'badge-cyan' },
+    { pos: 'Selective', name: 'EM Exposure', rationale: 'Avoid energy importers; favor commodity exporters', badge: 'badge-amber' },
+    { pos: 'Hold', name: 'Cash', rationale: 'Optionality for deployment on ceasefire/resolution', badge: 'badge-cyan' },
+  ],
+  risks: [
+    { risk: 'Strait closed >60 days', prob: 'Medium', impact: 'Oil $110–120; global recession', probLevel: 3 },
+    { risk: 'Conflict spreads to more countries', prob: 'Medium', impact: 'Broader sell-off; commodity super-spike', probLevel: 3 },
+    { risk: 'Ceasefire within 60 days', prob: 'Low-Med', impact: 'Sharp relief rally; oil to $70s', probLevel: 2 },
+    { risk: 'Iran attacks Saudi/UAE oil infra', prob: 'Low', impact: 'Oil $150+; severe global recession', probLevel: 1 },
+    { risk: 'US political backlash → withdrawal', prob: 'Medium', impact: 'Oil normalizes; dollar weakens', probLevel: 3 },
+    { risk: 'Strategic reserves depleted', prob: 'Med-High', impact: 'Second oil price shock in H2 2026', probLevel: 4 },
+  ],
+  nearTerm: [
+    { title: 'Conflict Duration', text: 'Protracted — both sides reject negotiations. Attritional drone/interceptor warfare continues. Military campaign needs weeks more.' },
+    { title: 'Oil Prices', text: 'Brent expected to average ~$98/bbl through Mar-Apr. Could spike to $110+ if Hormuz stays closed. IEA reserves cover only ~20 days.' },
+    { title: 'Equities', text: 'S&P 500 likely −5% to −10% from Jan highs if conflict persists. Defense and energy outperform. Ceasefire triggers sharp rally.' },
+    { title: 'Fed Policy', text: 'Rates held steady — caught between inflation and growth. Rate cuts off the table for H1 2026. "Higher for longer."' },
+  ],
+  medTerm: [
+    { title: 'Diplomatic Resolution', text: 'More likely by mid-2026 as costs mount ($830M+/day), allies push for it, Iran\'s new leadership may seek an exit, and reserves deplete.' },
+    { title: 'Oil Normalization', text: 'If conflict de-escalates: Brent to ~$71 by year-end. But futures say pre-war levels not until Aug 2027 (infrastructure damage + risk premium).' },
+    { title: 'European Recession', text: 'If energy prices stay elevated through Q2-Q3, Europe likely enters mild recession. ECB may cut despite inflation — a painful call.' },
+    { title: 'Dollar Peak & Decline', text: 'Dollar expected to peak in Q2 2026 and weaken in H2 as conflict resolves and safe-haven demand fades.' },
+  ],
+  longTerm: [
+    { title: 'Energy Security Realignment', text: 'Accelerated investment in non-OPEC production, renewables, nuclear, strategic reserve replenishment, and route diversification.' },
+    { title: 'De-Globalization of Energy', text: 'Countries prioritize self-sufficiency, fragmenting global energy markets into regional blocs.' },
+    { title: 'Defense Spending Cycle', text: 'Multi-year cycle across NATO and allies — benefits defense industry but adds fiscal pressure.' },
+    { title: 'Gold Structural Bull', text: 'Central bank buying, de-dollarization, and recurring geopolitical shocks support $6,000–6,300/oz by late 2026.' },
+  ],
+  timeline: [
+    { date: 'June 2025', title: 'Initial Strikes on Iran\'s Nuclear Program', desc: 'US-Israeli strikes target nuclear facilities. Moderate oil spike, quickly contained.', impact: 'Moderate' },
+    { date: 'Late Feb 2026', title: '"Operation Epic Fury" Launched', desc: 'Coordinated strikes on hundreds of sites across Iran. Supreme Leader Khamenei killed.', impact: 'Severe' },
+    { date: 'Late Feb–Early Mar', title: 'Iranian Retaliation', desc: 'Full-scale attacks across 11 countries. Strait of Hormuz effectively shut down. Major shippers suspend transits.', impact: 'Severe' },
+    { date: 'Early Mar 2026', title: 'Regional Production Collapse', desc: 'Iraq cuts 1.5M bbl/day. Qatar halts LNG. 3M+ bbl/day refining offline.', impact: 'Severe' },
+    { date: 'Mar 11, 2026', title: 'IEA Strategic Reserve Release', desc: '400M barrels released — largest coordinated release in history. Temporary price stabilization.', impact: 'Stabilizing' },
+    { date: 'Mid-Mar 2026', title: 'Attritional Warfare Phase', desc: 'Conflict evolves into drone/interceptor attrition. No diplomatic resolution in sight. Sustained risk premiums.', impact: 'Ongoing' },
+  ],
+};
+
+function renderStatCards(containerId, items) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = items.map(s => `
+    <div class="card stat-card">
+      <span class="label">${s.label}</span>
+      <span class="value">${s.value}</span>
+      ${s.change ? `<span class="change ${s.dir}">${s.dir === 'up' ? '&#9650;' : s.dir === 'down' ? '&#9660;' : '&#9679;'} ${s.change}</span>` : ''}
+      ${s.sub ? `<span class="sub">${s.sub}</span>` : ''}
+    </div>
+  `).join('');
+}
+
+function renderBars(containerId, items, maxVal) {
+  const el = document.getElementById(containerId);
+  const rows = items.map(d => {
+    const pct = maxVal ? (d.value / maxVal * 100) : (Math.abs(d.value) / 3 * 100);
+    return `<div class="bar-row">
+      <span class="bar-label">${d.label}</span>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:${Math.min(pct, 100)}%; background:${d.color};" data-width="${Math.min(pct, 100)}">
+          ${d.unit ? d.value + (typeof d.value === 'number' && d.unit !== '% halted' ? ' ' : '') + d.unit : d.note || ''}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  el.innerHTML += `<div class="bar-chart">${rows}</div>`;
+}
+
+function renderForecasts(containerId, items) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = items.map(f => `
+    <div class="forecast-row">
+      <div>
+        <div class="forecast-source">${f.source}</div>
+        <div class="forecast-scenario">${f.scenario}</div>
+      </div>
+      <span class="forecast-val" style="color:${f.color}">${f.value}</span>
+    </div>
+  `).join('');
+}
+
+function renderTable(containerId, rows, cols) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = rows.map(r => `<tr>${cols.map(c => `<td>${c(r)}</td>`).join('')}</tr>`).join('');
+}
+
+function renderRiskBars(level) {
+  let bars = '';
+  for (let i = 1; i <= 5; i++) {
+    const cls = i <= level ? (level <= 2 ? 'filled-green' : level <= 3 ? 'filled-amber' : 'filled-red') : '';
+    bars += `<div class="risk-bar ${cls}"></div>`;
+  }
+  return `<div class="risk-meter">${bars}</div>`;
+}
+
+function renderPredictions(containerId, items) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = items.map(p => `
+    <div class="card">
+      <div style="font-weight:600; margin-bottom:0.375rem; color:var(--accent);">${p.title}</div>
+      <p style="font-size:0.8125rem; color:var(--text-muted); line-height:1.6;">${p.text}</p>
+    </div>
+  `).join('');
+}
+
+function init() {
+  renderStatCards('overviewStats', DATA.overview);
+  renderStatCards('supplyStats', DATA.supply);
+
+  renderStatCards('oilPrices', DATA.oilPrices);
+  renderBars('supplyBars', DATA.supplyDisruptions, 20);
+  renderForecasts('oilForecasts', DATA.oilForecasts);
+
+  renderStatCards('equityStats', DATA.equities);
+  renderStatCards('bondStats', DATA.bonds);
+
+  const reasonsEl = document.getElementById('bondReasons');
+  reasonsEl.innerHTML = DATA.bondReasons.map(r => `<li style="padding:0.375rem 0; border-bottom:1px solid var(--border);">${r}</li>`).join('');
+
+  const currEl = document.getElementById('currencyBars');
+  DATA.currencies.forEach(c => {
+    const pct = Math.abs(c.value) / 3 * 100;
+    currEl.innerHTML += `<div class="bar-row" style="margin-bottom:0.5rem;">
+      <span class="bar-label">${c.label}</span>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:${pct}%; background:${c.color};">${c.value}% &mdash; ${c.note}</div>
+      </div>
+    </div>`;
+  });
+
+  renderStatCards('goldStats', DATA.gold);
+  const gtEl = document.getElementById('goldTargets');
+  gtEl.innerHTML = DATA.goldTargets.map(t => `
+    <div style="display:flex; justify-content:space-between; align-items:center; padding:0.5rem 0;">
+      <span style="font-size:0.8125rem; color:var(--text-muted);">${t.source}</span>
+      <span style="font-size:1.25rem; font-weight:700; color:var(--green);">${t.value}</span>
+    </div>
+  `).join('');
+
+  renderStatCards('inflationStats', DATA.inflation);
+  renderStatCards('scenarioStats', DATA.scenario100);
+
+  const fedEl = document.getElementById('fedCard');
+  fedEl.innerHTML = `<p style="font-size:0.875rem; font-weight:600; color:var(--amber); margin-bottom:0.75rem;">The Fed faces an "impossible position"</p>` +
+    DATA.fedPressures.map(p => `<div style="display:flex; gap:0.5rem; align-items:flex-start; margin-bottom:0.5rem;">
+      <span style="color:var(--${p.icon === 'up' ? 'red' : p.icon === 'down' ? 'green' : 'amber'}); font-size:0.75rem; margin-top:2px;">${p.icon === 'up' ? '&#9650;' : p.icon === 'down' ? '&#9660;' : '&#9679;'}</span>
+      <span style="font-size:0.8125rem;">${p.text}</span>
+    </div>`).join('');
+
+  const regEl = document.getElementById('regionalCards');
+  regEl.innerHTML = DATA.regional.map(r => `
+    <div class="card">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+        <span style="font-weight:600;">${r.region}</span>
+        <span class="badge ${r.badge}">${r.risk}</span>
+      </div>
+      <p style="font-size:0.8125rem; color:var(--text-muted); line-height:1.5;">${r.detail}</p>
+    </div>
+  `).join('');
+
+  renderTable('winnersTable', DATA.winners, [
+    r => `<span style="color:var(--green); font-weight:500;">${r.sector}</span>`,
+    r => `<span style="color:var(--text-muted);">${r.reason}</span>`,
+  ]);
+  renderTable('losersTable', DATA.losers, [
+    r => `<span style="color:var(--red); font-weight:500;">${r.sector}</span>`,
+    r => `<span style="color:var(--text-muted);">${r.reason}</span>`,
+  ]);
+  renderTable('strategyTable', DATA.strategies, [
+    r => `<span class="badge ${r.badge}">${r.pos}</span>`,
+    r => `<span style="font-weight:500;">${r.name}</span>`,
+    r => `<span style="color:var(--text-muted);">${r.rationale}</span>`,
+  ]);
+
+  renderTable('risksTable', DATA.risks, [
+    r => r.risk,
+    r => `${r.prob}${renderRiskBars(r.probLevel)}`,
+    r => `<span style="color:var(--text-muted);">${r.impact}</span>`,
+  ]);
+
+  renderPredictions('nearTerm', DATA.nearTerm);
+  renderPredictions('medTerm', DATA.medTerm);
+  renderPredictions('longTerm', DATA.longTerm);
+
+  const tlEl = document.getElementById('timelineList');
+  tlEl.innerHTML = DATA.timeline.map(t => `
+    <div class="timeline-item">
+      <span class="timeline-date">${t.date}</span>
+      <div class="timeline-title">${t.title}</div>
+      <div class="timeline-desc">${t.desc}</div>
+    </div>
+  `).join('');
+
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('panel-' + btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  setTimeout(() => {
+    document.querySelectorAll('.bar-fill').forEach(el => {
+      const w = el.getAttribute('data-width');
+      if (w) el.style.width = w + '%';
+    });
+  }, 100);
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>
