@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Tool Cost Comparison: Cursor vs Claude vs GPT</title>
+<style>
+  :root {
+    --bg: #0d1117;
+    --surface: #161b22;
+    --surface-raised: #1c2129;
+    --border: #30363d;
+    --text: #e6edf3;
+    --text-muted: #8b949e;
+    --accent-cursor: #f97316;
+    --accent-claude: #d97706;
+    --accent-gpt: #22c55e;
+    --accent-blue: #58a6ff;
+    --accent-purple: #bc8cff;
+    --star: #f59e0b;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 0 1rem;
+  }
+
+  .container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2rem 0 4rem;
+  }
+
+  header {
+    text-align: center;
+    padding: 3rem 0 2rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2rem;
+  }
+
+  header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 0.5rem;
+  }
+
+  header .subtitle {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+
+  .nav-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2rem;
+    padding-bottom: 0;
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 10;
+    padding-top: 0.5rem;
+  }
+
+  .nav-tab {
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+    border: none;
+    background: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color 0.2s, border-color 0.2s;
+    font-family: inherit;
+    white-space: nowrap;
+  }
+
+  .nav-tab:hover { color: var(--text); }
+  .nav-tab.active {
+    color: var(--accent-blue);
+    border-bottom-color: var(--accent-blue);
+  }
+
+  .section { display: none; animation: fadeIn 0.3s ease; }
+  .section.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+  h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 2rem 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  h2:first-child { margin-top: 0; }
+
+  h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 1.5rem 0 0.75rem;
+    color: var(--accent-blue);
+  }
+
+  p { margin: 0.75rem 0; color: var(--text); }
+
+  .callout {
+    background: var(--surface);
+    border-left: 3px solid var(--accent-blue);
+    padding: 1rem 1.25rem;
+    border-radius: 0 6px 6px 0;
+    margin: 1.25rem 0;
+    font-size: 0.95rem;
+  }
+
+  .callout.verdict {
+    border-left-color: var(--accent-purple);
+  }
+
+  .callout strong { color: var(--accent-blue); }
+  .callout.verdict strong { color: var(--accent-purple); }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  thead th {
+    background: var(--surface);
+    text-align: left;
+    padding: 0.65rem 0.75rem;
+    border: 1px solid var(--border);
+    font-weight: 600;
+    color: var(--text);
+    white-space: nowrap;
+  }
+
+  tbody td {
+    padding: 0.55rem 0.75rem;
+    border: 1px solid var(--border);
+    vertical-align: top;
+  }
+
+  tbody tr:hover { background: var(--surface-raised); }
+
+  .badge {
+    display: inline-block;
+    padding: 0.15rem 0.5rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  .badge-cursor { background: rgba(249,115,22,0.15); color: var(--accent-cursor); }
+  .badge-claude { background: rgba(217,119,6,0.15); color: var(--accent-claude); }
+  .badge-gpt { background: rgba(34,197,94,0.15); color: var(--accent-gpt); }
+  .badge-free { background: rgba(88,166,255,0.15); color: var(--accent-blue); }
+  .badge-combo { background: rgba(188,140,255,0.15); color: var(--accent-purple); }
+
+  .price { font-weight: 700; font-variant-numeric: tabular-nums; }
+  .price-highlight { color: var(--accent-blue); }
+
+  .star { color: var(--star); letter-spacing: 1px; }
+  .star-empty { color: var(--border); letter-spacing: 1px; }
+
+  .summary-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .summary-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem;
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+  .summary-card:hover { border-color: var(--accent-blue); }
+
+  .summary-card .tool-name {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+  }
+
+  .summary-card .tool-best {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .summary-card .tool-price {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent-blue);
+  }
+
+  .summary-card .tool-plan {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+  }
+
+  .takeaway-list {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+  }
+
+  .takeaway-list li {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+  }
+
+  .takeaway-list li strong {
+    color: var(--accent-blue);
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  .responsive-table {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  @media (max-width: 700px) {
+    header h1 { font-size: 1.4rem; }
+    .nav-tab { font-size: 0.78rem; padding: 0.5rem 0.6rem; }
+    table { font-size: 0.8rem; }
+    thead th, tbody td { padding: 0.4rem 0.5rem; }
+  }
+
+  footer {
+    text-align: center;
+    padding: 2rem 0;
+    border-top: 1px solid var(--border);
+    margin-top: 3rem;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>Cursor vs Claude vs GPT</h1>
+  <p class="subtitle">Cost analysis for personal use &mdash; March 2026</p>
+</header>
+
+<nav class="nav-tabs" id="nav">
+  <button class="nav-tab active" data-tab="overview">Overview</button>
+  <button class="nav-tab" data-tab="subscriptions">Subscriptions</button>
+  <button class="nav-tab" data-tab="api">API Pricing</button>
+  <button class="nav-tab" data-tab="scenarios">Scenarios</button>
+  <button class="nav-tab" data-tab="features">Features</button>
+  <button class="nav-tab" data-tab="value">Value</button>
+  <button class="nav-tab" data-tab="recommendations">Picks</button>
+  <button class="nav-tab" data-tab="takeaways">Takeaways</button>
+</nav>
+
+<!-- ─── OVERVIEW ────────────────────────────────────── -->
+<div class="section active" id="overview">
+
+  <h2>Executive Summary</h2>
+
+  <p>This analysis compares three dominant AI tools for personal use: <strong>Cursor</strong> (AI code editor), <strong>Claude</strong> (Anthropic's assistant &amp; coding agent), and <strong>ChatGPT</strong> (OpenAI's assistant). Each serves overlapping but distinct roles&mdash;the right choice depends on whether you primarily code, do knowledge work, or need a mix of both.</p>
+
+  <div class="summary-cards">
+    <div class="summary-card">
+      <div class="tool-name"><span class="badge badge-cursor">Cursor</span></div>
+      <div class="tool-best">Daily coding in an IDE</div>
+      <div class="tool-price">$20<span style="font-size:0.6em">/mo</span></div>
+      <div class="tool-plan">Pro plan</div>
+    </div>
+    <div class="summary-card">
+      <div class="tool-name"><span class="badge badge-claude">Claude</span></div>
+      <div class="tool-best">Coding + research + writing</div>
+      <div class="tool-price">$20<span style="font-size:0.6em">/mo</span></div>
+      <div class="tool-plan">Pro plan</div>
+    </div>
+    <div class="summary-card">
+      <div class="tool-name"><span class="badge badge-gpt">ChatGPT</span></div>
+      <div class="tool-best">General-purpose AI + research</div>
+      <div class="tool-price">$20<span style="font-size:0.6em">/mo</span></div>
+      <div class="tool-plan">Plus plan</div>
+    </div>
+  </div>
+
+  <div class="callout">
+    All three converge at the <strong>$20/month</strong> price point for their recommended personal tier, but diverge significantly at higher usage levels and in what you get for that money.
+  </div>
+</div>
+
+<!-- ─── SUBSCRIPTIONS ──────────────────────────────── -->
+<div class="section" id="subscriptions">
+
+  <h2>Subscription Plan Comparison</h2>
+
+  <h3>Free Tiers</h3>
+  <div class="responsive-table">
+  <table>
+    <thead><tr>
+      <th>Feature</th>
+      <th><span class="badge badge-cursor">Cursor</span> Hobby</th>
+      <th><span class="badge badge-claude">Claude</span> Free</th>
+      <th><span class="badge badge-gpt">ChatGPT</span> Free</th>
+    </tr></thead>
+    <tbody>
+      <tr><td>Monthly Cost</td><td class="price">$0</td><td class="price">$0</td><td class="price">$0</td></tr>
+      <tr><td>Model Access</td><td>Limited Sonnet / GPT-4o</td><td>Claude Sonnet</td><td>GPT-5.3 (limited)</td></tr>
+      <tr><td>Usage Limits</td><td>~2,000 completions + 50 premium req/mo</td><td>~20-30 messages/day</td><td>Limited messages/day</td></tr>
+      <tr><td>Context Window</td><td>Standard</td><td>200K tokens</td><td>Standard</td></tr>
+      <tr><td>Coding</td><td>Inline completions, basic chat</td><td>Chat-based help</td><td>Chat-based help</td></tr>
+      <tr><td>Practical Viability</td><td>~2-3 hrs active coding</td><td>Light daily use</td><td>Light daily use</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout verdict">
+    <strong>Verdict:</strong> Claude's free tier is the most generous for daily casual use. Cursor's free tier is essentially a trial&mdash;it runs out fast. ChatGPT Free is functional but heavily throttled.
+  </div>
+
+  <h3>Mid-Tier Plans &mdash; $20/month</h3>
+  <div class="responsive-table">
+  <table>
+    <thead><tr>
+      <th>Feature</th>
+      <th><span class="badge badge-cursor">Cursor</span> Pro</th>
+      <th><span class="badge badge-claude">Claude</span> Pro</th>
+      <th><span class="badge badge-gpt">ChatGPT</span> Plus</th>
+    </tr></thead>
+    <tbody>
+      <tr><td>Monthly Cost</td><td class="price">$20</td><td class="price">$20 <span style="color:var(--text-muted);font-weight:400">($200/yr)</span></td><td class="price">$20</td></tr>
+      <tr><td>Annual Option</td><td>No</td><td>Yes (~$16.67/mo)</td><td>No</td></tr>
+      <tr><td>Models</td><td>GPT-4o, Claude Sonnet, Gemini</td><td>Sonnet 4.6 + Opus</td><td>GPT-5.3 + GPT-5.4 Thinking</td></tr>
+      <tr><td>Premium Requests</td><td>500/mo</td><td>5x free limits</td><td>Expanded messages</td></tr>
+      <tr><td>Code Completions</td><td>Unlimited</td><td>N/A</td><td>N/A</td></tr>
+      <tr><td>Context Window</td><td>Standard</td><td>200K tokens</td><td>Standard</td></tr>
+      <tr><td>Special Features</td><td>Inline autocomplete, agent mode, tab predictions</td><td>Claude Code CLI, Projects, artifacts</td><td>Custom GPTs, Codex, deep research, image gen</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout verdict">
+    <strong>Verdict:</strong> Remarkably similar value at $20/month. Cursor Pro is purpose-built for developers. Claude Pro offers the best annual discount and includes Claude Code CLI. ChatGPT Plus has the broadest feature set.
+  </div>
+
+  <h3>Power-User Plans</h3>
+  <div class="responsive-table">
+  <table>
+    <thead><tr>
+      <th>Tier</th>
+      <th><span class="badge badge-cursor">Cursor</span></th>
+      <th><span class="badge badge-claude">Claude</span></th>
+      <th><span class="badge badge-gpt">ChatGPT</span></th>
+    </tr></thead>
+    <tbody>
+      <tr><td>Budget</td><td>&mdash;</td><td>&mdash;</td><td class="price">Go: $8/mo</td></tr>
+      <tr><td>Standard</td><td class="price">Pro: $20/mo</td><td class="price">Pro: $20/mo</td><td class="price">Plus: $20/mo</td></tr>
+      <tr><td>Enhanced</td><td class="price">Pro+: $60/mo <span style="color:var(--text-muted);font-weight:400">(3x)</span></td><td class="price">Max 5x: $100/mo</td><td>&mdash;</td></tr>
+      <tr><td>Premium</td><td class="price">Ultra: $200/mo <span style="color:var(--text-muted);font-weight:400">(20x)</span></td><td class="price">Max 20x: $200/mo</td><td class="price">Pro: $200/mo</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout">
+    The jump from $20 to $200 buys roughly 10-20x usage everywhere. Cursor uniquely offers a <strong>$60 middle step</strong> (3x), while Claude jumps to $100 (5x). ChatGPT has no mid-tier but does offer the cheapest paid plan at <strong>$8/mo</strong>.
+  </div>
+</div>
+
+<!-- ─── API PRICING ────────────────────────────────── -->
+<div class="section" id="api">
+
+  <h2>API Pricing</h2>
+  <p>Per 1 million tokens. Relevant for developers using pay-as-you-go or the Cursor BYOK option.</p>
+
+  <h3>Anthropic (Claude) API</h3>
+  <div class="responsive-table">
+  <table>
+    <thead><tr><th>Model</th><th>Input</th><th>Output</th><th>Cached Input</th></tr></thead>
+    <tbody>
+      <tr><td>Opus 4.6</td><td class="price">$5.00</td><td class="price">$25.00</td><td class="price">$0.50</td></tr>
+      <tr><td>Sonnet 4.6</td><td class="price">$3.00</td><td class="price">$15.00</td><td class="price">$0.30</td></tr>
+      <tr><td>Haiku 4.5</td><td class="price">$1.00</td><td class="price">$5.00</td><td class="price">$0.10</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>OpenAI (GPT) API</h3>
+  <div class="responsive-table">
+  <table>
+    <thead><tr><th>Model</th><th>Input</th><th>Output</th><th>Cached Input</th></tr></thead>
+    <tbody>
+      <tr><td>GPT-5.4</td><td class="price">$2.50</td><td class="price">$15.00</td><td class="price">$0.25</td></tr>
+      <tr><td>GPT-4o</td><td class="price">$2.50</td><td class="price">$10.00</td><td class="price">$1.25</td></tr>
+      <tr><td>GPT-5</td><td class="price">$1.25</td><td class="price">$10.00</td><td class="price">$0.125</td></tr>
+      <tr><td>GPT-4o-mini</td><td class="price">$0.15</td><td class="price">$0.60</td><td>&mdash;</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Cursor</h3>
+  <div class="callout">
+    Cursor has no public API. It consumes OpenAI, Anthropic, and Google models internally. With <strong>Bring Your Own Key (BYOK)</strong> on Pro, you pay $20/mo for the editor + your own API costs to the provider, unlocking unlimited premium requests.
+  </div>
+
+  <h3>Session Cost Estimate</h3>
+  <p>A typical 2-hour coding session (~50K input, ~10K output tokens):</p>
+  <div class="responsive-table">
+  <table>
+    <thead><tr><th>Provider</th><th>Model</th><th>Cost / Session</th><th>Cost / Month (20 sessions)</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge badge-claude">Anthropic</span></td><td>Sonnet 4.6</td><td class="price">$0.30</td><td class="price">$6.00</td></tr>
+      <tr><td><span class="badge badge-claude">Anthropic</span></td><td>Opus 4.6</td><td class="price">$0.50</td><td class="price">$10.00</td></tr>
+      <tr><td><span class="badge badge-gpt">OpenAI</span></td><td>GPT-4o</td><td class="price">$0.23</td><td class="price">$4.50</td></tr>
+      <tr><td><span class="badge badge-gpt">OpenAI</span></td><td>GPT-5.4</td><td class="price">$0.28</td><td class="price">$5.50</td></tr>
+      <tr><td><span class="badge badge-gpt">OpenAI</span></td><td>GPT-4o-mini</td><td class="price">$0.01</td><td class="price">$0.27</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="callout">
+    <strong>Takeaway:</strong> Light-to-moderate users can save significantly with API pricing. A developer using Claude Sonnet via API might spend <strong>$6-10/month</strong> instead of $20.
+  </div>
+</div>
+
+<!-- ─── SCENARIOS ──────────────────────────────────── -->
+<div class="section" id="scenarios">
+
+  <h2>Use-Case Scenarios</h2>
+
+  <h3>A &mdash; Casual Hobbyist Developer</h3>
+  <p>Codes 3-5 hours/week, occasional AI chat for debugging.</p>
+  <div class="responsive-table">
+  <table>
+    <thead><tr><th>Tool</th><th>Plan</th><th>Cost</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge badge-cursor">Cursor</span></td><td>Hobby (Free)</td><td class="price">$0</td><td>May hit limits</td></tr>
+      <tr><td><span class="badge badge-claude">Claude</span></td><td>Free</td><td class="price">$0</td><td>20-30 msgs/day is sufficient</td></tr>
+      <tr><td><span class="badge badge-gpt">ChatGPT</span></td><td>Free or Go</td><td class="price">$0-8</td><td>Go is good value for light use</td></tr>
+      <tr style="background:var(--surface)"><td><span class="badge badge-combo">Best Combo</span></td><td>Claude Free + ChatGPT Go</td><td class="price price-highlight">$8</td><td>Best budget combo</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>B &mdash; Active Personal Developer</h3>
+  <p>Codes 10-20 hours/week, daily AI-assisted development.</p>
+  <div class="responsive-table">
+  <table>
+    <thead><tr><th>Tool</th><th>Plan</th><th>Cost</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge badge-cursor">Cursor</span></td><td>Pro</td><td class="price">$20</td><td>Best IDE integration</td></tr>
+      <tr><td><span class="badge badge-claude">Claude</span></td><td>Pro</td><td class="price">$20</td><td>Claude Code CLI + assistant</td></tr>
+      <tr><td><span class="badge badge-gpt">ChatGPT</span></td><td>Plus</td><td class="price">$20</td><td>Broadest feature set</td></tr>
+      <tr style="background:var(--surface)"><td><span class="badge badge-combo">Budget</span></td><td>Cursor Pro + Claude Free</td><td class="price price-highlight">$20</td><td>Code in Cursor, free Claude for Qs</td></tr>
+      <tr style="background:var(--surface)"><td><span class="badge badge-combo">Full Power</span></td><td>Cursor Pro + Claude Pro</td><td class="price price-highlight">$40</td><td>Full coding + full assistant</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>C &mdash; Power User / Full-Time Developer</h3>
+  <p>Codes 30+ hours/week, heavy AI usage across tasks.</p>
+  <div class="responsive-table">
+  <table>
+    <thead><tr><th>Tool</th><th>Plan</th><th>Cost</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge badge-cursor">Cursor</span></td><td>Pro+ or Ultra</td><td class="price">$60-200</td><td>Avoid rate limits</td></tr>
+      <tr><td><span class="badge badge-claude">Claude</span></td><td>Max 5x / 20x</td><td class="price">$100-200</td><td>Heavy Claude Code usage</td></tr>
+      <tr><td><span class="badge badge-gpt">ChatGPT</span></td><td>Pro</td><td class="price">$200</td><td>Unlimited everything</td></tr>
+      <tr style="background:var(--surface)"><td><span class="badge badge-combo">Max Setup</span></td><td>Cursor Ultra + Claude Max 5x</td><td class="price price-highlight">$300</td><td>Peak coding productivity</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>D &mdash; Non-Developer / Knowledge Worker</h3>
+  <p>Writing, research, analysis&mdash;no coding.</p>
+  <div class="responsive-table">
+  <table>
+    <thead><tr><th>Tool</th><th>Plan</th><th>Cost</th><th>Notes</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge badge-cursor">Cursor</span></td><td>N/A</td><td>&mdash;</td><td>Not relevant</td></tr>
+      <tr><td><span class="badge badge-claude">Claude</span></td><td>Pro</td><td class="price">$20</td><td>Excellent for writing &amp; analysis</td></tr>
+      <tr><td><span class="badge badge-gpt">ChatGPT</span></td><td>Plus</td><td class="price">$20</td><td>Research, browsing, DALL-E</td></tr>
+      <tr style="background:var(--surface)"><td><span class="badge badge-combo">Best Pick</span></td><td>ChatGPT Plus</td><td class="price price-highlight">$20</td><td>Broadest non-coding feature set</td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- ─── FEATURES ───────────────────────────────────── -->
+<div class="section" id="features">
+
+  <h2>Feature Comparison Matrix</h2>
+  <div class="responsive-table">
+  <table>
+    <thead><tr>
+      <th>Capability</th>
+      <th><span class="badge badge-cursor">Cursor</span></th>
+      <th><span class="badge badge-claude">Claude</span></th>
+      <th><span class="badge badge-gpt">ChatGPT</span></th>
+    </tr></thead>
+    <tbody>
+      <tr><td>Inline Autocomplete</td><td><span class="star">★★★★★</span></td><td>N/A</td><td>N/A</td></tr>
+      <tr><td>Coding Chat / Agent</td><td><span class="star">★★★★</span><span class="star-empty">★</span></td><td><span class="star">★★★★★</span></td><td><span class="star">★★★</span><span class="star-empty">★★</span></td></tr>
+      <tr><td>Multi-file Refactors</td><td><span class="star">★★★</span><span class="star-empty">★★</span></td><td><span class="star">★★★★★</span></td><td><span class="star">★★</span><span class="star-empty">★★★</span></td></tr>
+      <tr><td>Debugging</td><td><span class="star">★★★★</span><span class="star-empty">★</span></td><td><span class="star">★★★★</span><span class="star-empty">★</span></td><td><span class="star">★★★</span><span class="star-empty">★★</span></td></tr>
+      <tr><td>General Q&A</td><td><span class="star">★★</span><span class="star-empty">★★★</span></td><td><span class="star">★★★★★</span></td><td><span class="star">★★★★★</span></td></tr>
+      <tr><td>Writing &amp; Editing</td><td><span class="star">★</span><span class="star-empty">★★★★</span></td><td><span class="star">★★★★★</span></td><td><span class="star">★★★★</span><span class="star-empty">★</span></td></tr>
+      <tr><td>Research &amp; Browsing</td><td>&mdash;</td><td><span class="star">★★</span><span class="star-empty">★★★</span></td><td><span class="star">★★★★★</span></td></tr>
+      <tr><td>Image Generation</td><td>&mdash;</td><td>&mdash;</td><td><span class="star">★★★★★</span></td></tr>
+      <tr><td>Image Understanding</td><td>&mdash;</td><td><span class="star">★★★★</span><span class="star-empty">★</span></td><td><span class="star">★★★★</span><span class="star-empty">★</span></td></tr>
+      <tr><td>File / Doc Analysis</td><td>Code only</td><td><span class="star">★★★★</span><span class="star-empty">★</span></td><td><span class="star">★★★★★</span></td></tr>
+      <tr><td>Custom Agents</td><td>&mdash;</td><td>Projects</td><td>Custom GPTs</td></tr>
+      <tr><td>Context Window</td><td>Model-dependent</td><td>200K tokens</td><td>Model-dependent</td></tr>
+      <tr><td>Data Privacy</td><td>Pro+ plans</td><td>Pro+ plans</td><td>Plus+ plans</td></tr>
+      <tr><td>Offline Use</td><td>Partial</td><td>&mdash;</td><td>&mdash;</td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- ─── VALUE ──────────────────────────────────────── -->
+<div class="section" id="value">
+
+  <h2>Value Analysis</h2>
+
+  <h3>What $20/month gets you</h3>
+  <div class="responsive-table">
+  <table>
+    <thead><tr>
+      <th>Metric</th>
+      <th><span class="badge badge-cursor">Cursor</span> Pro</th>
+      <th><span class="badge badge-claude">Claude</span> Pro</th>
+      <th><span class="badge badge-gpt">ChatGPT</span> Plus</th>
+    </tr></thead>
+    <tbody>
+      <tr><td>Coding value</td><td><span class="star">★★★★★</span></td><td><span class="star">★★★★</span><span class="star-empty">★</span></td><td><span class="star">★★★</span><span class="star-empty">★★</span></td></tr>
+      <tr><td>General assistant</td><td><span class="star">★★</span><span class="star-empty">★★★</span></td><td><span class="star">★★★★★</span></td><td><span class="star">★★★★★</span></td></tr>
+      <tr><td>Creative / media</td><td><span class="star">★</span><span class="star-empty">★★★★</span></td><td><span class="star">★★★</span><span class="star-empty">★★</span></td><td><span class="star">★★★★★</span></td></tr>
+      <tr><td>Research</td><td><span class="star">★</span><span class="star-empty">★★★★</span></td><td><span class="star">★★★</span><span class="star-empty">★★</span></td><td><span class="star">★★★★★</span></td></tr>
+      <tr><td>API / integration</td><td><span class="star">★★★★</span><span class="star-empty">★</span></td><td><span class="star">★★★★</span><span class="star-empty">★</span></td><td><span class="star">★★★</span><span class="star-empty">★★</span></td></tr>
+      <tr style="background:var(--surface)"><td><strong>Overall breadth</strong></td><td>Narrow (coding)</td><td>Broad</td><td>Broadest</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>Subscription vs API Break-Even</h3>
+  <div class="callout">
+    <strong>Claude Sonnet 4.6:</strong> Pro ($20/mo) breaks even at ~330K output tokens/month (~66 substantial conversations). Fewer than ~3 sessions/day? API is cheaper.
+  </div>
+  <div class="callout">
+    <strong>GPT-4o:</strong> Plus ($20/mo) breaks even at ~200K output tokens/month. But Plus bundles GPTs, DALL-E, and browsing, adding value beyond raw tokens.
+  </div>
+
+  <h3>Hidden Costs</h3>
+  <div class="responsive-table">
+  <table>
+    <thead><tr><th>Factor</th><th><span class="badge badge-cursor">Cursor</span></th><th><span class="badge badge-claude">Claude</span></th><th><span class="badge badge-gpt">ChatGPT</span></th></tr></thead>
+    <tbody>
+      <tr><td>BYOK API bills</td><td>+$5-50/mo</td><td>N/A</td><td>N/A</td></tr>
+      <tr><td>Rate-limit upgrades</td><td>+$40-180</td><td>+$80-180</td><td>+$180</td></tr>
+      <tr><td>Multi-tool pairing</td><td>Often needed</td><td>Standalone</td><td>Standalone</td></tr>
+      <tr><td>Learning curve</td><td>Medium (IDE switch)</td><td>Low</td><td>Low</td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- ─── RECOMMENDATIONS ────────────────────────────── -->
+<div class="section" id="recommendations">
+
+  <h2>Recommendations</h2>
+
+  <h3>"I just want one tool"</h3>
+  <div class="responsive-table">
+  <table>
+    <thead><tr><th>If you primarily&hellip;</th><th>Choose</th><th>Plan</th><th>Cost</th></tr></thead>
+    <tbody>
+      <tr><td>Write code all day</td><td><span class="badge badge-cursor">Cursor</span></td><td>Pro</td><td class="price">$20/mo</td></tr>
+      <tr><td>Code + write + research</td><td><span class="badge badge-claude">Claude</span></td><td>Pro</td><td class="price">$20/mo</td></tr>
+      <tr><td>Do everything</td><td><span class="badge badge-gpt">ChatGPT</span></td><td>Plus</td><td class="price">$20/mo</td></tr>
+      <tr><td>Want cheapest useful option</td><td><span class="badge badge-claude">Claude</span></td><td>Free</td><td class="price">$0</td></tr>
+      <tr><td>Cheap paid, no coding</td><td><span class="badge badge-gpt">ChatGPT</span></td><td>Go</td><td class="price">$8/mo</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>"I'll pay for two tools"</h3>
+  <div class="responsive-table">
+  <table>
+    <thead><tr><th>Combo</th><th>Cost</th><th>Why</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge badge-cursor">Cursor Pro</span> + <span class="badge badge-claude">Claude Free</span></td><td class="price">$20</td><td>Best coding + free backup assistant</td></tr>
+      <tr><td><span class="badge badge-cursor">Cursor Pro</span> + <span class="badge badge-gpt">ChatGPT Plus</span></td><td class="price">$40</td><td>Coding IDE + broadest AI assistant</td></tr>
+      <tr><td><span class="badge badge-cursor">Cursor Pro</span> + <span class="badge badge-claude">Claude Pro</span></td><td class="price">$40</td><td>IDE + best coding assistant + Claude Code</td></tr>
+      <tr><td><span class="badge badge-claude">Claude Pro</span> + <span class="badge badge-gpt">ChatGPT Go</span></td><td class="price">$28</td><td>Full Claude + cheap images/browsing</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>"Budget is not a concern"</h3>
+  <div class="callout">
+    <strong>Cursor Ultra + Claude Max 20x</strong> at <strong>$400/month</strong> gives the most capable AI dev environment: unlimited IDE completions with 20x agent usage, plus 20x Claude Code and assistant access.
+  </div>
+
+  <h3>Annual Cost Summary</h3>
+  <div class="responsive-table">
+  <table>
+    <thead><tr><th>Combination</th><th>Monthly</th><th>Annual</th></tr></thead>
+    <tbody>
+      <tr><td>All Free tiers</td><td class="price">$0</td><td class="price">$0</td></tr>
+      <tr><td>ChatGPT Go only</td><td class="price">$8</td><td class="price">$96</td></tr>
+      <tr><td>Any single Pro/Plus</td><td class="price">$20</td><td class="price">$240</td></tr>
+      <tr><td>Claude Pro (annual billing)</td><td class="price">$16.67</td><td class="price">$200</td></tr>
+      <tr><td>Cursor Pro + Claude Free</td><td class="price">$20</td><td class="price">$240</td></tr>
+      <tr><td>Cursor Pro + Claude Pro (annual)</td><td class="price">$36.67</td><td class="price">$440</td></tr>
+      <tr><td>Cursor Pro + ChatGPT Plus</td><td class="price">$40</td><td class="price">$480</td></tr>
+      <tr><td>All three at Pro/Plus</td><td class="price">$60</td><td class="price">$720</td></tr>
+      <tr><td>All three at max tier</td><td class="price">$600</td><td class="price">$7,200</td></tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- ─── TAKEAWAYS ──────────────────────────────────── -->
+<div class="section" id="takeaways">
+
+  <h2>Key Takeaways</h2>
+
+  <ol class="takeaway-list">
+    <li>
+      <strong>The $20/month convergence is real.</strong>
+      All three tools offer compelling value at $20/month. The question isn't cost&mdash;it's which capabilities you need most.
+    </li>
+    <li>
+      <strong>Cursor is the only purpose-built coding IDE.</strong>
+      If you code daily, nothing matches its inline completions and IDE integration. But it does one thing&mdash;you'll likely pair it with Claude or ChatGPT.
+    </li>
+    <li>
+      <strong>Claude is the best all-rounder for developers.</strong>
+      Claude Pro at $20/month (or $200/year) gives you an excellent general assistant plus Claude Code CLI access for autonomous coding tasks.
+    </li>
+    <li>
+      <strong>ChatGPT has the broadest feature set.</strong>
+      Image generation, deep research, web browsing, custom GPTs, and Codex make it the Swiss Army knife. Best for users who need AI beyond just coding.
+    </li>
+    <li>
+      <strong>API pricing can save money for light users.</strong>
+      If you make fewer than ~3 substantial AI requests per day, pay-as-you-go API access is cheaper than any $20 subscription.
+    </li>
+    <li>
+      <strong>The most common power-user setup in 2026 is Cursor + Claude</strong>,
+      running $20-40/month for standard use or $260-400/month at the highest tiers.
+    </li>
+  </ol>
+</div>
+
+<footer>
+  Pricing as of March 2026. Subject to change. Token estimates are approximations based on typical personal workflows.
+</footer>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var tabs = document.querySelectorAll('.nav-tab');
+  var sections = document.querySelectorAll('.section');
+
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      var target = tab.getAttribute('data-tab');
+      tabs.forEach(function (t) { t.classList.remove('active'); });
+      sections.forEach(function (s) { s.classList.remove('active'); });
+      tab.classList.add('active');
+      document.getElementById(target).classList.add('active');
+    });
+  });
+});
+</script>
+</body>
+</html>
