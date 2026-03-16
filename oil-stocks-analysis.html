@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Oil Stocks Analysis | Energy Sector Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.2/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+  <style>
+    :root {
+      --bg-primary: #0a0e1a;
+      --bg-secondary: #111827;
+      --bg-card: #1a2235;
+      --bg-card-hover: #1e2a40;
+      --border: #243050;
+      --accent-gold: #f59e0b;
+      --accent-blue: #3b82f6;
+      --accent-green: #10b981;
+      --accent-red: #ef4444;
+      --accent-purple: #8b5cf6;
+      --accent-cyan: #06b6d4;
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+    }
+
+    /* ─── HEADER ─────────────────────────────────────────────── */
+    header {
+      background: linear-gradient(135deg, #0a0e1a 0%, #0f1e3d 50%, #0a1628 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 0 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(10px);
+    }
+
+    .header-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--accent-gold);
+    }
+
+    .logo-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--accent-gold), #d97706);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+
+    .header-meta {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+    }
+
+    .live-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      border-radius: 20px;
+      padding: 0.25rem 0.75rem;
+      color: var(--accent-green);
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .live-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--accent-green);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* ─── HERO ───────────────────────────────────────────────── */
+    .hero {
+      background: linear-gradient(135deg, #0f1e3d 0%, #0a1628 40%, #1a0a00 100%);
+      padding: 3rem 2rem 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .hero-title {
+      font-size: clamp(1.75rem, 4vw, 2.75rem);
+      font-weight: 800;
+      background: linear-gradient(135deg, #f1f5f9 0%, var(--accent-gold) 60%, #f59e0b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-subtitle {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      margin-bottom: 2rem;
+      max-width: 640px;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+    }
+
+    .hero-stat {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem 1.25rem;
+      transition: border-color 0.2s;
+    }
+
+    .hero-stat:hover { border-color: var(--accent-gold); }
+
+    .hero-stat-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      margin-bottom: 0.35rem;
+    }
+
+    .hero-stat-value {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .hero-stat-change {
+      font-size: 0.8rem;
+      margin-top: 0.2rem;
+    }
+
+    .up { color: var(--accent-green); }
+    .down { color: var(--accent-red); }
+
+    /* ─── MAIN LAYOUT ────────────────────────────────────────── */
+    main {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .section-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-muted);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ─── CARDS ──────────────────────────────────────────────── */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.5rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .card:hover {
+      border-color: rgba(245,158,11,0.3);
+      box-shadow: 0 4px 24px rgba(245,158,11,0.06);
+    }
+
+    .card-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card-badge {
+      font-size: 0.7rem;
+      font-weight: 500;
+      background: rgba(245,158,11,0.15);
+      color: var(--accent-gold);
+      border: 1px solid rgba(245,158,11,0.3);
+      border-radius: 20px;
+      padding: 0.2rem 0.6rem;
+    }
+
+    /* ─── TICKER STRIP ───────────────────────────────────────── */
+    .ticker-strip {
+      background: var(--bg-secondary);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .ticker-inner {
+      display: flex;
+      animation: scroll 40s linear infinite;
+      width: max-content;
+    }
+
+    .ticker-inner:hover { animation-play-state: paused; }
+
+    @keyframes scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .ticker-item {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.6rem 1.5rem;
+      border-right: 1px solid var(--border);
+      white-space: nowrap;
+      font-size: 0.85rem;
+    }
+
+    .ticker-symbol {
+      font-weight: 700;
+      color: var(--accent-gold);
+    }
+
+    .ticker-price { color: var(--text-primary); font-weight: 500; }
+
+    /* ─── STOCK GRID ─────────────────────────────────────────── */
+    .stock-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+
+    .stock-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.25rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stock-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--card-accent, var(--accent-blue));
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .stock-card:hover { border-color: rgba(245,158,11,0.4); transform: translateY(-2px); }
+    .stock-card:hover::before { opacity: 1; }
+
+    .stock-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+
+    .stock-symbol {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text-primary);
+    }
+
+    .stock-name {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.1rem;
+    }
+
+    .stock-rating {
+      font-size: 0.7rem;
+      font-weight: 700;
+      border-radius: 6px;
+      padding: 0.2rem 0.5rem;
+    }
+
+    .rating-buy { background: rgba(16,185,129,0.15); color: var(--accent-green); border: 1px solid rgba(16,185,129,0.3); }
+    .rating-hold { background: rgba(245,158,11,0.15); color: var(--accent-gold); border: 1px solid rgba(245,158,11,0.3); }
+    .rating-sell { background: rgba(239,68,68,0.15); color: var(--accent-red); border: 1px solid rgba(239,68,68,0.3); }
+
+    .stock-price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+    }
+
+    .stock-change {
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .stock-metrics {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem;
+    }
+
+    .metric {
+      background: rgba(255,255,255,0.03);
+      border-radius: 8px;
+      padding: 0.5rem 0.6rem;
+    }
+
+    .metric-label {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 0.15rem;
+    }
+
+    .metric-value {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+    }
+
+    .mini-chart { height: 40px; margin: 0.75rem 0 0.25rem; }
+
+    /* ─── CHARTS GRID ────────────────────────────────────────── */
+    .charts-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 900px) {
+      .charts-row { grid-template-columns: 1fr; }
+    }
+
+    .chart-container { position: relative; }
+    .chart-container canvas { display: block; }
+
+    /* ─── PERFORMANCE CHART ──────────────────────────────────── */
+    .perf-chart-wrap { height: 320px; }
+
+    /* ─── DONUT CHART ────────────────────────────────────────── */
+    .donut-wrap { height: 280px; }
+
+    /* ─── OIL PRICE CHART ────────────────────────────────────── */
+    .oil-chart-wrap { height: 280px; }
+
+    /* ─── TABLE ──────────────────────────────────────────────── */
+    .table-container { overflow-x: auto; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    thead tr {
+      border-bottom: 1px solid var(--border);
+    }
+
+    th {
+      text-align: left;
+      padding: 0.6rem 1rem;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid rgba(36,48,80,0.5);
+      color: var(--text-secondary);
+    }
+
+    tr:hover td { background: rgba(255,255,255,0.02); }
+    tr:last-child td { border-bottom: none; }
+
+    .td-symbol { font-weight: 700; color: var(--text-primary); }
+    .td-name { color: var(--text-muted); font-size: 0.8rem; }
+
+    .sparkline-cell { width: 100px; }
+
+    /* ─── ANALYSIS NOTES ─────────────────────────────────────── */
+    .analysis-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1rem;
+    }
+
+    .insight-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--insight-color, var(--accent-blue));
+      border-radius: 12px;
+      padding: 1.25rem;
+    }
+
+    .insight-tag {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--insight-color, var(--accent-blue));
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .insight-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .insight-body {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    /* ─── FOOTER ─────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 1.5rem 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      line-height: 1.8;
+    }
+
+    /* ─── LEGEND ─────────────────────────────────────────────── */
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ─── TABS ───────────────────────────────────────────────── */
+    .tab-bar {
+      display: flex;
+      gap: 0.25rem;
+      background: rgba(255,255,255,0.04);
+      border-radius: 10px;
+      padding: 0.25rem;
+      margin-bottom: 1.25rem;
+      width: max-content;
+    }
+
+    .tab {
+      padding: 0.4rem 1rem;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .tab.active {
+      background: var(--bg-card);
+      color: var(--text-primary);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+    }
+
+    /* ─── RISK METER ─────────────────────────────────────────── */
+    .risk-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 0.75rem;
+    }
+
+    .risk-item {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .risk-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+    }
+
+    .risk-label span:first-child { color: var(--text-secondary); }
+    .risk-label span:last-child { color: var(--text-primary); font-weight: 600; }
+
+    .risk-bar {
+      height: 6px;
+      background: rgba(255,255,255,0.06);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .risk-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 1s ease;
+    }
+
+    @media (max-width: 640px) {
+      main { padding: 1rem; }
+      .hero { padding: 1.5rem 1rem; }
+      header { padding: 0 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ─── HEADER ─────────────────────────────────────────────── -->
+<header>
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-icon">⛽</div>
+      OilWatch Pro
+    </div>
+    <div class="header-meta">
+      <div class="live-badge">
+        <div class="live-dot"></div>
+        Sample Data · Mar 2026
+      </div>
+      <span style="display:none;color:var(--text-muted)">Energy Sector Analysis</span>
+    </div>
+  </div>
+</header>
+
+<!-- ─── TICKER ─────────────────────────────────────────────── -->
+<div class="ticker-strip">
+  <div class="ticker-inner" id="tickerInner">
+    <!-- filled by JS -->
+  </div>
+</div>
+
+<!-- ─── HERO ───────────────────────────────────────────────── -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-title">Oil &amp; Energy Stocks Analysis</div>
+    <div class="hero-subtitle">
+      Comprehensive coverage of global integrated majors, U.S. E&amp;P leaders, and refining &amp; midstream companies — with valuation metrics, risk factors, and sector outlook.
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="hero-stat-label">Brent Crude ($/bbl)</div>
+        <div class="hero-stat-value">$81.40</div>
+        <div class="hero-stat-change up">▲ +1.2% today</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-label">WTI Crude ($/bbl)</div>
+        <div class="hero-stat-value">$77.85</div>
+        <div class="hero-stat-change up">▲ +1.0% today</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-label">Nat. Gas ($/MMBtu)</div>
+        <div class="hero-stat-value">$2.64</div>
+        <div class="hero-stat-change down">▼ −2.1% today</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-label">XLE ETF</div>
+        <div class="hero-stat-value">$89.72</div>
+        <div class="hero-stat-change up">▲ +0.8% today</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-label">Sector P/E (avg)</div>
+        <div class="hero-stat-value">12.4×</div>
+        <div class="hero-stat-change" style="color:var(--text-muted)">vs S&P 500 21.8×</div>
+      </div>
+      <div class="hero-stat">
+        <div class="hero-stat-label">Avg. Div. Yield</div>
+        <div class="hero-stat-value">3.8%</div>
+        <div class="hero-stat-change" style="color:var(--text-muted)">12-month trailing</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─── MAIN ────────────────────────────────────────────────── -->
+<main>
+
+  <!-- Stock Cards -->
+  <div>
+    <div class="section-title">Top Oil Stocks — Key Metrics</div>
+    <div class="stock-grid" id="stockGrid">
+      <!-- filled by JS -->
+    </div>
+  </div>
+
+  <!-- Performance + Allocation -->
+  <div>
+    <div class="section-title">12-Month Price Performance (Indexed to 100)</div>
+    <div class="charts-row">
+      <div class="card">
+        <div class="card-title">
+          Relative Stock Performance
+          <span class="card-badge">Mar 2025 → Mar 2026</span>
+        </div>
+        <div class="legend" id="perfLegend"></div>
+        <div class="perf-chart-wrap">
+          <canvas id="perfChart"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">
+          Market Cap Breakdown
+          <span class="card-badge">USD Billions</span>
+        </div>
+        <div class="donut-wrap">
+          <canvas id="donutChart"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Oil Price Correlation -->
+  <div>
+    <div class="section-title">Oil Price vs. Major Stock Prices</div>
+    <div class="card">
+      <div class="card-title">
+        Brent Crude vs. XOM &amp; CVX (18-Month Comparison, Normalized)
+        <span class="card-badge">Correlation Analysis</span>
+      </div>
+      <div class="oil-chart-wrap">
+        <canvas id="oilChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Fundamentals Table -->
+  <div>
+    <div class="section-title">Fundamental Comparison</div>
+    <div class="card">
+      <div class="card-title">
+        Valuation &amp; Financial Metrics
+        <span class="card-badge">FY2025 Data</span>
+      </div>
+      <div class="table-container">
+        <table id="fundamentalsTable">
+          <thead>
+            <tr>
+              <th>Ticker</th>
+              <th>Company</th>
+              <th>Price</th>
+              <th>Mkt Cap</th>
+              <th>P/E</th>
+              <th>EV/EBITDA</th>
+              <th>Div. Yield</th>
+              <th>Debt/Equity</th>
+              <th>FCF Yield</th>
+              <th>ROIC</th>
+              <th>Rating</th>
+            </tr>
+          </thead>
+          <tbody id="fundamentalsBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dividend History -->
+  <div>
+    <div class="section-title">Dividend &amp; Buyback Yield</div>
+    <div class="card">
+      <div class="card-title">
+        Shareholder Return (Dividends + Buybacks, % of Market Cap)
+        <span class="card-badge">FY2023 – FY2025</span>
+      </div>
+      <div style="height:260px;">
+        <canvas id="dividendChart"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Risk Analysis -->
+  <div>
+    <div class="section-title">Risk Factor Assessment</div>
+    <div class="card">
+      <div class="card-title">Sector Risk Dashboard</div>
+      <div class="risk-grid" id="riskGrid"></div>
+    </div>
+  </div>
+
+  <!-- Analyst Insights -->
+  <div>
+    <div class="section-title">Analyst Insights &amp; Sector Outlook</div>
+    <div class="analysis-grid" id="insightGrid"></div>
+  </div>
+
+</main>
+
+<!-- ─── FOOTER ─────────────────────────────────────────────── -->
+<footer>
+  <strong>OilWatch Pro</strong> — Energy Sector Research Dashboard<br>
+  Data is illustrative and based on publicly available estimates as of Q1 2026. Not financial advice.<br>
+  Built with Chart.js · Hosted on GitHub Pages
+</footer>
+
+<!-- ─── SCRIPTS ─────────────────────────────────────────────── -->
+<script>
+// ── DATA ────────────────────────────────────────────────────────
+const STOCKS = [
+  {
+    symbol: 'XOM', name: 'ExxonMobil', country: '🇺🇸',
+    price: 118.43, change: 1.24, changePct: 1.06,
+    marketCap: 474, pe: 13.2, evEbitda: 7.8,
+    divYield: 3.4, debtEquity: 0.21, fcfYield: 6.8, roic: 14.2,
+    rating: 'BUY', accentColor: '#3b82f6',
+    history: [100,102,98,104,107,103,109,115,112,118,114,120,118],
+  },
+  {
+    symbol: 'CVX', name: 'Chevron', country: '🇺🇸',
+    price: 159.22, change: -0.88, changePct: -0.55,
+    marketCap: 298, pe: 14.6, evEbitda: 8.2,
+    divYield: 4.1, debtEquity: 0.17, fcfYield: 5.9, roic: 12.6,
+    rating: 'BUY', accentColor: '#06b6d4',
+    history: [100,101,97,101,105,100,104,110,107,112,108,115,112],
+  },
+  {
+    symbol: 'SHEL', name: 'Shell plc', country: '🇬🇧',
+    price: 72.84, change: 0.61, changePct: 0.84,
+    marketCap: 224, pe: 10.4, evEbitda: 5.9,
+    divYield: 4.3, debtEquity: 0.32, fcfYield: 7.4, roic: 11.8,
+    rating: 'BUY', accentColor: '#f59e0b',
+    history: [100,99,96,100,103,99,106,111,108,114,110,117,115],
+  },
+  {
+    symbol: 'BP', name: 'BP p.l.c.', country: '🇬🇧',
+    price: 34.17, change: -0.22, changePct: -0.64,
+    marketCap: 103, pe: 9.6, evEbitda: 5.3,
+    divYield: 5.8, debtEquity: 0.61, fcfYield: 8.2, roic: 9.4,
+    rating: 'HOLD', accentColor: '#10b981',
+    history: [100,98,94,96,99,95,100,105,101,106,100,104,103],
+  },
+  {
+    symbol: 'TTE', name: 'TotalEnergies', country: '🇫🇷',
+    price: 68.54, change: 0.32, changePct: 0.47,
+    marketCap: 171, pe: 8.9, evEbitda: 5.0,
+    divYield: 5.2, debtEquity: 0.44, fcfYield: 9.1, roic: 13.2,
+    rating: 'BUY', accentColor: '#8b5cf6',
+    history: [100,101,97,102,105,101,107,113,109,116,112,118,117],
+  },
+  {
+    symbol: 'COP', name: 'ConocoPhillips', country: '🇺🇸',
+    price: 112.38, change: 1.05, changePct: 0.94,
+    marketCap: 146, pe: 11.8, evEbitda: 6.7,
+    divYield: 3.1, debtEquity: 0.35, fcfYield: 7.8, roic: 15.6,
+    rating: 'BUY', accentColor: '#ec4899',
+    history: [100,103,99,105,109,105,112,118,114,121,116,124,122],
+  },
+  {
+    symbol: 'EOG', name: 'EOG Resources', country: '🇺🇸',
+    price: 128.74, change: 0.87, changePct: 0.68,
+    marketCap: 77, pe: 12.1, evEbitda: 6.4,
+    divYield: 2.9, debtEquity: 0.22, fcfYield: 8.4, roic: 16.8,
+    rating: 'BUY', accentColor: '#f97316',
+    history: [100,104,100,107,111,107,115,122,118,126,121,129,128],
+  },
+  {
+    symbol: 'DVN', name: 'Devon Energy', country: '🇺🇸',
+    price: 38.92, change: -0.43, changePct: -1.09,
+    marketCap: 25, pe: 8.4, evEbitda: 4.8,
+    divYield: 6.4, debtEquity: 0.48, fcfYield: 11.2, roic: 18.4,
+    rating: 'HOLD', accentColor: '#14b8a6',
+    history: [100,102,96,100,103,98,104,108,103,107,100,105,103],
+  },
+  {
+    symbol: 'MRO', name: 'Marathon Oil', country: '🇺🇸',
+    price: 26.14, change: 0.18, changePct: 0.69,
+    marketCap: 16, pe: 9.2, evEbitda: 4.6,
+    divYield: 1.8, debtEquity: 0.37, fcfYield: 9.6, roic: 14.8,
+    rating: 'HOLD', accentColor: '#6366f1',
+    history: [100,103,98,104,107,102,108,114,110,116,111,117,115],
+  },
+  {
+    symbol: 'SLB', name: 'Schlumberger (SLB)', country: '🇺🇸',
+    price: 44.26, change: 0.52, changePct: 1.19,
+    marketCap: 64, pe: 16.4, evEbitda: 9.2,
+    divYield: 2.6, debtEquity: 0.56, fcfYield: 5.4, roic: 12.2,
+    rating: 'BUY', accentColor: '#a78bfa',
+    history: [100,102,99,104,107,104,109,115,112,118,115,120,118],
+  },
+];
+
+const MONTHS_12 = ['Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'];
+const MONTHS_18 = ['Sep','Oct','Nov','Dec','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb'];
+
+// Brent (normalized), XOM (normalized), CVX (normalized)
+const OIL_BRENT  = [100,96,98,103,107,101,104,109,106,110,105,108,111,107,112,109,111,113];
+const OIL_XOM    = [100,97,100,106,110,104,108,115,112,118,113,117,120,116,121,118,120,122];
+const OIL_CVX    = [100,96,98,103,107,100,104,111,107,113,108,112,115,111,116,113,114,117];
+
+const DIVIDENDS = {
+  labels: ['XOM','CVX','SHEL','BP','TTE','COP','EOG','DVN'],
+  fy2023: [5.1,6.2,7.8,8.4,9.3,4.6,5.2,14.1],
+  fy2024: [5.4,6.5,8.1,8.9,9.8,5.2,6.1,12.8],
+  fy2025: [5.7,6.8,8.4,9.2,10.4,5.8,6.8,11.9],
+};
+
+const RISKS = [
+  { label: 'Oil Price Volatility', value: 72, color: '#ef4444' },
+  { label: 'Geopolitical Risk', value: 65, color: '#f97316' },
+  { label: 'Energy Transition Risk', value: 58, color: '#f59e0b' },
+  { label: 'Regulatory / Carbon Tax', value: 54, color: '#eab308' },
+  { label: 'Demand Destruction (EVs)', value: 46, color: '#84cc16' },
+  { label: 'Credit / Balance Sheet', value: 32, color: '#22c55e' },
+  { label: 'Refining Margin Risk', value: 48, color: '#10b981' },
+  { label: 'Natural Gas Exposure', value: 61, color: '#f59e0b' },
+  { label: 'OPEC+ Supply Risk', value: 69, color: '#ef4444' },
+  { label: 'Currency / FX Risk', value: 38, color: '#22c55e' },
+  { label: 'ESG / Divestment Pressure', value: 55, color: '#eab308' },
+  { label: 'Operational / Safety Risk', value: 28, color: '#22c55e' },
+];
+
+const INSIGHTS = [
+  {
+    color: '#3b82f6', tag: 'Macro Outlook',
+    title: 'Oil Demand Resilient Through 2026',
+    body: 'IEA projects global oil demand to reach 103.8 mb/d in 2026, driven by aviation recovery and emerging-market growth. Supply discipline from OPEC+ is expected to keep Brent in the $75–$90/bbl range, providing a supportive floor for integrated majors.',
+  },
+  {
+    color: '#10b981', tag: 'Value Opportunity',
+    title: 'Sector Trades at Historic Discount',
+    body: 'The energy sector\'s P/E ratio of ~12× compares favorably to the S&P 500\'s 21.8×. With strong free cash flow yields (5–11%) and aggressive buyback programs, oil majors are returning record capital to shareholders — often exceeding their market valuations in a 7-year window.',
+  },
+  {
+    color: '#f59e0b', tag: 'Transition Risk',
+    title: 'Renewables Shift Weighing on Valuations',
+    body: 'European majors (BP, SHEL, TTE) face greater multiple compression from energy-transition commitments. However, TotalEnergies\' balanced approach — investing in both LNG and solar — has helped it maintain higher ROIC versus peers. U.S. E&P players face less direct transition pressure.',
+  },
+  {
+    color: '#ef4444', tag: 'Key Risk',
+    title: 'OPEC+ Cohesion Remains Fragile',
+    body: 'The UAE and Iraq have repeatedly exceeded quotas, straining cartel discipline. A surprise OPEC+ output surge — or a rapid Iran sanctions relief deal — could send Brent below $70/bbl, materially impacting sector earnings and free cash flow generation.',
+  },
+  {
+    color: '#8b5cf6', tag: 'US E&P Focus',
+    title: 'Permian Basin: The Crown Jewel',
+    body: 'ExxonMobil\'s PXD acquisition and Chevron\'s PDC deal have supercharged Permian exposure. EOG and COP independently hold top-tier Permian acreage with breakevens below $45/bbl — making them resilient even in a mid-cycle downturn scenario.',
+  },
+  {
+    color: '#06b6d4', tag: 'Dividends',
+    title: 'Dividend Sustainability &amp; Buybacks',
+    body: 'XOM has raised its dividend for 41 consecutive years. At current oil prices, sector-wide payout ratios sit below 45%, leaving ample room for dividend growth. Share buybacks across the top 8 oil majors are running at a combined $80B+ annually.',
+  },
+];
+
+// ── TICKER ──────────────────────────────────────────────────────
+function buildTicker() {
+  const items = STOCKS.map(s => {
+    const sign = s.changePct >= 0 ? '+' : '';
+    const cls  = s.changePct >= 0 ? 'up' : 'down';
+    return `<div class="ticker-item">
+      <span class="ticker-symbol">${s.symbol}</span>
+      <span class="ticker-price">$${s.price.toFixed(2)}</span>
+      <span class="${cls}">${sign}${s.changePct.toFixed(2)}%</span>
+    </div>`;
+  }).join('');
+  const el = document.getElementById('tickerInner');
+  el.innerHTML = items + items; // duplicate for seamless loop
+}
+
+// ── STOCK CARDS ──────────────────────────────────────────────────
+function buildStockCards() {
+  const grid = document.getElementById('stockGrid');
+  STOCKS.forEach((s, idx) => {
+    const sign    = s.changePct >= 0 ? '+' : '';
+    const cls     = s.changePct >= 0 ? 'up' : 'down';
+    const ratingCls = { BUY: 'rating-buy', HOLD: 'rating-hold', SELL: 'rating-sell' }[s.rating];
+
+    const card = document.createElement('div');
+    card.className = 'stock-card';
+    card.style.setProperty('--card-accent', s.accentColor);
+    card.innerHTML = `
+      <div class="stock-header">
+        <div>
+          <div class="stock-symbol">${s.country} ${s.symbol}</div>
+          <div class="stock-name">${s.name}</div>
+        </div>
+        <div class="stock-rating ${ratingCls}">${s.rating}</div>
+      </div>
+      <div class="stock-price">$${s.price.toFixed(2)}</div>
+      <div class="stock-change ${cls}">${sign}$${Math.abs(s.change).toFixed(2)} (${sign}${s.changePct.toFixed(2)}%) today</div>
+      <canvas class="mini-chart" id="mini-${s.symbol}"></canvas>
+      <div class="stock-metrics">
+        <div class="metric">
+          <div class="metric-label">Market Cap</div>
+          <div class="metric-value">$${s.marketCap}B</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">P/E Ratio</div>
+          <div class="metric-value">${s.pe}×</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">Div. Yield</div>
+          <div class="metric-value">${s.divYield}%</div>
+        </div>
+        <div class="metric">
+          <div class="metric-label">FCF Yield</div>
+          <div class="metric-value">${s.fcfYield}%</div>
+        </div>
+      </div>`;
+    grid.appendChild(card);
+  });
+
+  // Draw mini sparklines after DOM insertion
+  STOCKS.forEach(s => {
+    const canvas = document.getElementById(`mini-${s.symbol}`);
+    const isUp   = s.history[s.history.length - 1] >= s.history[0];
+    const color  = isUp ? '#10b981' : '#ef4444';
+    new Chart(canvas, {
+      type: 'line',
+      data: {
+        labels: MONTHS_12,
+        datasets: [{ data: s.history, borderColor: color, borderWidth: 1.5, pointRadius: 0, tension: 0.4, fill: true,
+          backgroundColor: (ctx) => {
+            const g = ctx.chart.ctx.createLinearGradient(0, 0, 0, 40);
+            g.addColorStop(0, color + '40');
+            g.addColorStop(1, color + '00');
+            return g;
+          }
+        }],
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false, animation: false,
+        plugins: { legend: { display: false }, tooltip: { enabled: false } },
+        scales: { x: { display: false }, y: { display: false } },
+      },
+    });
+  });
+}
+
+// ── PERFORMANCE CHART ─────────────────────────────────────────────
+function buildPerfChart() {
+  const colors = STOCKS.map(s => s.accentColor);
+  const datasets = STOCKS.map((s, i) => ({
+    label: s.symbol,
+    data: s.history,
+    borderColor: colors[i],
+    borderWidth: 2,
+    pointRadius: 0,
+    pointHoverRadius: 4,
+    tension: 0.4,
+    fill: false,
+  }));
+
+  // legend
+  const legendEl = document.getElementById('perfLegend');
+  STOCKS.forEach((s, i) => {
+    legendEl.innerHTML += `<div class="legend-item">
+      <div class="legend-dot" style="background:${colors[i]}"></div>
+      ${s.symbol}
+    </div>`;
+  });
+
+  new Chart(document.getElementById('perfChart'), {
+    type: 'line',
+    data: { labels: MONTHS_12, datasets },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1a2235', borderColor: '#243050', borderWidth: 1,
+          titleColor: '#94a3b8', bodyColor: '#f1f5f9',
+          callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y.toFixed(1)}` },
+        },
+      },
+      scales: {
+        x: { grid: { color: '#243050' }, ticks: { color: '#64748b', font: { size: 11 } } },
+        y: {
+          grid: { color: '#243050' },
+          ticks: { color: '#64748b', font: { size: 11 }, callback: v => v.toFixed(0) },
+          title: { display: true, text: 'Indexed (Base = 100)', color: '#64748b', font: { size: 11 } },
+        },
+      },
+    },
+  });
+}
+
+// ── DONUT CHART ───────────────────────────────────────────────────
+function buildDonutChart() {
+  new Chart(document.getElementById('donutChart'), {
+    type: 'doughnut',
+    data: {
+      labels: STOCKS.map(s => s.symbol),
+      datasets: [{
+        data: STOCKS.map(s => s.marketCap),
+        backgroundColor: STOCKS.map(s => s.accentColor + 'cc'),
+        borderColor: '#0a0e1a',
+        borderWidth: 3,
+        hoverOffset: 6,
+      }],
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: { color: '#94a3b8', font: { size: 11 }, padding: 12, boxWidth: 12 },
+        },
+        tooltip: {
+          backgroundColor: '#1a2235', borderColor: '#243050', borderWidth: 1,
+          callbacks: { label: ctx => ` ${ctx.label}: $${ctx.parsed}B` },
+        },
+      },
+      cutout: '62%',
+    },
+  });
+}
+
+// ── OIL PRICE CHART ───────────────────────────────────────────────
+function buildOilChart() {
+  new Chart(document.getElementById('oilChart'), {
+    type: 'line',
+    data: {
+      labels: MONTHS_18,
+      datasets: [
+        { label: 'Brent Crude', data: OIL_BRENT, borderColor: '#f59e0b', borderWidth: 2.5, borderDash: [6,3], pointRadius: 0, tension: 0.4, fill: false },
+        { label: 'XOM', data: OIL_XOM, borderColor: '#3b82f6', borderWidth: 2, pointRadius: 0, tension: 0.4, fill: false },
+        { label: 'CVX', data: OIL_CVX, borderColor: '#06b6d4', borderWidth: 2, pointRadius: 0, tension: 0.4, fill: false },
+      ],
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          position: 'top',
+          labels: { color: '#94a3b8', font: { size: 11 }, boxWidth: 24, padding: 16 },
+        },
+        tooltip: {
+          backgroundColor: '#1a2235', borderColor: '#243050', borderWidth: 1,
+          callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y.toFixed(1)}` },
+        },
+      },
+      scales: {
+        x: { grid: { color: '#243050' }, ticks: { color: '#64748b', font: { size: 11 } } },
+        y: {
+          grid: { color: '#243050' },
+          ticks: { color: '#64748b', font: { size: 11 } },
+          title: { display: true, text: 'Indexed (Base = 100)', color: '#64748b', font: { size: 11 } },
+        },
+      },
+    },
+  });
+}
+
+// ── FUNDAMENTALS TABLE ────────────────────────────────────────────
+function buildTable() {
+  const tbody = document.getElementById('fundamentalsBody');
+  STOCKS.forEach(s => {
+    const sign    = s.changePct >= 0 ? '+' : '';
+    const cls     = s.changePct >= 0 ? 'up' : 'down';
+    const ratingCls = { BUY: 'rating-buy', HOLD: 'rating-hold', SELL: 'rating-sell' }[s.rating];
+    tbody.innerHTML += `<tr>
+      <td class="td-symbol" style="color:${s.accentColor}">${s.symbol}</td>
+      <td class="td-name">${s.name}</td>
+      <td style="color:var(--text-primary);font-weight:600">$${s.price.toFixed(2)}</td>
+      <td>$${s.marketCap}B</td>
+      <td>${s.pe}×</td>
+      <td>${s.evEbitda}×</td>
+      <td class="up">${s.divYield}%</td>
+      <td>${s.debtEquity.toFixed(2)}×</td>
+      <td class="up">${s.fcfYield}%</td>
+      <td>${s.roic}%</td>
+      <td><span class="stock-rating ${ratingCls}">${s.rating}</span></td>
+    </tr>`;
+  });
+}
+
+// ── DIVIDEND CHART ────────────────────────────────────────────────
+function buildDividendChart() {
+  new Chart(document.getElementById('dividendChart'), {
+    type: 'bar',
+    data: {
+      labels: DIVIDENDS.labels,
+      datasets: [
+        { label: 'FY2023', data: DIVIDENDS.fy2023, backgroundColor: '#3b82f680', borderRadius: 4 },
+        { label: 'FY2024', data: DIVIDENDS.fy2024, backgroundColor: '#f59e0b80', borderRadius: 4 },
+        { label: 'FY2025', data: DIVIDENDS.fy2025, backgroundColor: '#10b98180', borderRadius: 4 },
+      ],
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: {
+          position: 'top',
+          labels: { color: '#94a3b8', font: { size: 11 }, boxWidth: 16, padding: 16 },
+        },
+        tooltip: {
+          backgroundColor: '#1a2235', borderColor: '#243050', borderWidth: 1,
+          callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y.toFixed(1)}%` },
+        },
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { color: '#64748b', font: { size: 11 } } },
+        y: {
+          grid: { color: '#243050' },
+          ticks: { color: '#64748b', font: { size: 11 }, callback: v => v + '%' },
+          title: { display: true, text: 'Total Shareholder Return (%)', color: '#64748b', font: { size: 11 } },
+        },
+      },
+    },
+  });
+}
+
+// ── RISK GRID ─────────────────────────────────────────────────────
+function buildRiskGrid() {
+  const grid = document.getElementById('riskGrid');
+  RISKS.forEach(r => {
+    const riskLabel = r.value >= 65 ? 'High' : r.value >= 45 ? 'Medium' : 'Low';
+    grid.innerHTML += `<div class="risk-item">
+      <div class="risk-label">
+        <span>${r.label}</span>
+        <span style="color:${r.color}">${riskLabel} (${r.value}/100)</span>
+      </div>
+      <div class="risk-bar">
+        <div class="risk-fill" style="width:${r.value}%;background:${r.color}"></div>
+      </div>
+    </div>`;
+  });
+}
+
+// ── INSIGHTS ──────────────────────────────────────────────────────
+function buildInsights() {
+  const grid = document.getElementById('insightGrid');
+  INSIGHTS.forEach(ins => {
+    grid.innerHTML += `<div class="insight-card" style="--insight-color:${ins.color}">
+      <div class="insight-tag">${ins.tag}</div>
+      <div class="insight-title">${ins.title}</div>
+      <div class="insight-body">${ins.body}</div>
+    </div>`;
+  });
+}
+
+// ── INIT ──────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  buildTicker();
+  buildStockCards();
+  buildPerfChart();
+  buildDonutChart();
+  buildOilChart();
+  buildTable();
+  buildDividendChart();
+  buildRiskGrid();
+  buildInsights();
+});
+</script>
+</body>
+</html>
