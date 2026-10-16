@@ -486,14 +486,239 @@
       .bout { grid-template-columns: 1fr; }
       .bout .tags { flex-direction: row; align-items: center; }
       .bout .right { text-align: left; }
-      .tempo, .prices, .pin { grid-template-columns: 1fr; }
+      .tempo, .prices, .pin, .deck, .tools, .glove-split { grid-template-columns: 1fr; }
+      .reel { position: static; flex-direction: row; overflow-x: auto; padding-bottom: 0.3rem; }
+      .reel button { min-width: 11rem; }
+      .stage, .stage-body { min-height: 460px; }
+      .broadcast-hero { min-height: 70vh; }
       .nav { flex-wrap: wrap; }
       .nav-links { gap: 0.55rem 0.75rem; }
     }
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
-      .eq i { animation: none !important; }
+      .eq i, .stage-photo, .broadcast-hero img { animation: none !important; transition: none !important; }
     }
+    .broadcast { padding: 0 0 3.5rem; }
+    .broadcast-hero {
+      position: relative;
+      min-height: 78vh;
+      display: grid;
+      align-items: end;
+      overflow: hidden;
+    }
+    .broadcast-hero img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1.04);
+    }
+    .broadcast-hero .shade {
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(to top, #100e0c 2%, rgba(16,14,12,0.72) 38%, rgba(16,14,12,0.15) 70%),
+        linear-gradient(to right, rgba(16,14,12,0.45), transparent 50%);
+    }
+    .broadcast-copy {
+      position: relative;
+      z-index: 1;
+      width: min(var(--max), calc(100% - 2.5rem));
+      margin: 0 auto;
+      padding: 18vh 0 2.2rem;
+    }
+    .broadcast-copy h2 { max-width: 16ch; }
+
+    .deck {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 1.4rem 1.25rem 0;
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: 1rem;
+      align-items: start;
+    }
+    .reel {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+      position: sticky;
+      top: 76px;
+    }
+    .reel button {
+      appearance: none;
+      text-align: left;
+      background: rgba(255,255,255,0.02);
+      color: var(--dim);
+      border: 1px solid var(--line-soft);
+      border-radius: 12px;
+      padding: 0.55rem 0.7rem;
+      font: inherit;
+      cursor: pointer;
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 0.15rem 0.55rem;
+    }
+    .reel button small { grid-column: 2; color: var(--muted); font-size: 0.75rem; }
+    .reel button .idx { grid-row: span 2; align-self: center; font-family: var(--serif); color: var(--gold); }
+    .reel button[aria-selected="true"] {
+      background: #2c241c;
+      border-color: var(--gold);
+      color: white;
+    }
+    .stage {
+      position: relative;
+      min-height: 520px;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: #000;
+    }
+    .stage-photo {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: opacity 0.45s ease, transform 0.8s ease, filter 0.5s ease;
+    }
+    .stage.is-in .stage-photo { opacity: 0; transform: scale(1.08); }
+    .stage[data-sport="kb"] .stage-photo { filter: saturate(0.85) hue-rotate(150deg) brightness(0.92); }
+    .stage[data-sport="mma"] .stage-photo { filter: saturate(0.75) hue-rotate(230deg) brightness(0.85); }
+    .stage-shade {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(8,6,5,0.94) 0%, rgba(8,6,5,0.55) 42%, rgba(8,6,5,0.05) 68%);
+    }
+    .stage-body {
+      position: relative;
+      z-index: 1;
+      min-height: 520px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 1.3rem 1.3rem 1.15rem;
+      gap: 0.45rem;
+    }
+    .stage-body h3 {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      line-height: 1;
+    }
+    .stage-meta { color: var(--gold); font-size: 0.86rem; letter-spacing: 0.04em; text-transform: uppercase; }
+    .stage-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem;
+      margin-top: 0.3rem;
+    }
+    .stage-stats div {
+      background: rgba(0,0,0,0.35);
+      border: 1px solid var(--line-soft);
+      border-radius: 12px;
+      padding: 0.6rem 0.7rem;
+    }
+    .stage-stats b { display: block; }
+    .stage-stats span { color: var(--dim); font-size: 0.88rem; }
+    .stage-body p { color: var(--cream); max-width: 46rem; }
+
+    .tools {
+      max-width: var(--max);
+      margin: 1rem auto 0;
+      padding: 0 1.25rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.9rem;
+    }
+    .tool {
+      background: var(--raise);
+      border: 1px solid var(--line-soft);
+      border-radius: 18px;
+      padding: 1rem 1.05rem 1.1rem;
+    }
+    .tool h3 { font-size: 1.45rem; margin-bottom: 0.25rem; }
+    .tool p { color: var(--dim); }
+    .pace-row { display: grid; gap: 0.35rem; margin-top: 0.8rem; }
+    .pace-row label { display: flex; justify-content: space-between; gap: 1rem; font-size: 0.92rem; }
+    .pace-row input[type="range"] { width: 100%; accent-color: var(--gold); }
+    .clock-list { list-style: none; padding: 0; margin: 0.8rem 0 0; }
+    .clock-list li {
+      display: grid;
+      grid-template-columns: 4.2rem 1fr auto;
+      gap: 0.5rem;
+      padding: 0.38rem 0;
+      border-top: 1px solid var(--line-soft);
+      font-size: 0.92rem;
+    }
+    .clock-list time { color: var(--gold); font-variant-numeric: tabular-nums; }
+    .rounds { display: flex; gap: 0.45rem; flex-wrap: wrap; margin-top: 0.8rem; }
+    .round {
+      flex: 1 1 90px;
+      background: var(--bg);
+      border-radius: 12px;
+      padding: 0.5rem;
+    }
+    .round b { display: block; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.35rem; }
+    .round button {
+      width: 100%;
+      margin-top: 0.25rem;
+      background: transparent;
+      color: var(--dim);
+      border: 1px solid var(--line-soft);
+      border-radius: 8px;
+      padding: 0.35rem 0.3rem;
+      font: inherit;
+      font-size: 0.82rem;
+      cursor: pointer;
+    }
+    .round button[aria-pressed="true"] {
+      background: var(--gold);
+      color: #1a140c;
+      border-color: var(--gold);
+      font-weight: 600;
+    }
+    .verdict {
+      margin-top: 0.8rem;
+      font-family: var(--serif);
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      line-height: 1.05;
+    }
+    .glove-split {
+      max-width: var(--max);
+      margin: 1rem auto 0;
+      padding: 0 1.25rem;
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 0.9rem;
+      align-items: stretch;
+    }
+    .glove-split img {
+      width: 100%;
+      height: 100%;
+      max-height: 360px;
+      object-fit: cover;
+      border-radius: 18px;
+      border: 1px solid var(--line);
+    }
+    .glove-copy {
+      background: var(--plate);
+      border-radius: 18px;
+      border: 1px solid var(--line);
+      padding: 1.1rem 1.15rem;
+    }
+    .glove-copy h3 { font-size: 1.6rem; margin-bottom: 0.4rem; }
+
+    #maincard, #tonight, #fights, #rules, #scoring, #arrival, #watch { scroll-margin-top: 4.5rem; }
+
+    @media (max-width: 860px) {
+      .deck, .tools, .glove-split { grid-template-columns: 1fr; }
+      .reel { position: static; flex-direction: row; overflow-x: auto; padding-bottom: 0.35rem; scroll-margin-top: 5.5rem; }
+      .reel button { min-width: 10.5rem; }
+      .stage, .stage-body { min-height: 440px; }
+      .broadcast-hero { min-height: 68vh; }
+      .broadcast-copy { padding-top: 28vh; }
+    }
+
     @media print {
       body { background: white; color: black; }
       .nav, .eq i { display: none; }
@@ -509,6 +734,7 @@
     <nav class="nav-links" aria-label="Sections">
       <a href="#tonight">The night</a>
       <a href="#fights">Fights</a>
+      <a href="#maincard">8:30</a>
       <a href="#rules">Rules</a>
       <a href="#scoring">Scoring</a>
       <a href="#arrival">Getting there</a>
@@ -660,7 +886,7 @@
             <span>Abdessamie · Fez, Morocco · 19</span>
             <span>1–3 in ONE · lost his last two</span>
           </div>
-          <p class="why"><strong>The experience-against-youth fight, with a contract hanging on it.</strong> Lamsing’s recent wins include a decision over Fakhriddin Khasanov and a first-round knockout of Plaipayak. Rhenimi is the younger puncher, and he needs the night more. Both men have a recent loss to the same fighter, Denkriangkrai. Undercard bouts are three rounds. This one has been listed as three and as five. The announcer will settle it before the bell.</p>
+          <p class="why"><strong>The experience-against-youth fight, with a contract hanging on it.</strong> Lamsing’s recent wins include a decision over Fakhriddin Khasanov and a first-round knockout of Plaipayak. Rhenimi is the younger puncher, and he needs the night more. Both men have a recent loss to the same fighter, Denkriangkrai. The bout sheet lists three rounds of three minutes, and both men weighed about 125 pounds for a flyweight fight. The whole 8:30 card is broken down below.</p>
         </article>
 
         <article class="fight">
@@ -782,6 +1008,53 @@
           <div><span class="name">Lamsing</span><span class="from">Thailand</span></div>
           <div class="vs">vs</div>
           <div class="right"><span class="name">Abdessamie Rhenimi</span><span class="from">Morocco</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="maincard" class="broadcast">
+      <div class="broadcast-hero">
+        <img src="img/ring-night.jpg" alt="An empty ring under one spotlight, before the main card begins" />
+        <div class="shade"></div>
+        <div class="broadcast-copy">
+          <p class="kicker">ONE Friday Fights 175 · from 8:30</p>
+          <h2>Nine fights. The television show starts here.</h2>
+          <p class="lede">Channel 7, YouTube, and the rest of the world pick up at 8:30. This half is the contract chase: a sharp win is how a fighter earns a US$100,000 spot on ONE’s global roster. Six of the nine are Muay Thai. One is kickboxing. Two go to the mat.</p>
+        </div>
+      </div>
+
+      <div class="deck">
+        <div class="reel" role="tablist" aria-label="Main card, earliest fight first" id="reel"></div>
+        <article class="stage" id="stage" data-sport="kb">
+          <img class="stage-photo" id="stagePhoto" alt="" src="img/ring-night.jpg" />
+          <div class="stage-shade"></div>
+          <div class="stage-body" id="stageBody" aria-live="polite"></div>
+        </article>
+      </div>
+
+      <div class="glove-split">
+        <img src="img/two-gloves.jpg" alt="A small open-finger glove beside a larger closed boxing glove" />
+        <div class="glove-copy">
+          <h3>The glove changes twice.</h3>
+          <p>Yang and Iwanaga open the show in the big closed glove. Elbows are a foul. The next fight, Bagade against Shioya, switches to the small open-finger glove and five-minute rounds, and the fight is allowed to leave the feet. Every Muay Thai bout after that comes back to the small glove, the elbows, and the three-minute rounds. If you get lost, look at their hands.</p>
+        </div>
+      </div>
+
+      <div class="tools">
+        <div class="tool">
+          <h3>If the card slips</h3>
+          <p>Nothing below is an official start time. It is a walking pace from an 8:30 first bell: about 20 minutes for Muay Thai, a little less for the kickboxing opener, and longer for the two MMA fights. Drag it if the building is running late.</p>
+          <div class="pace-row">
+            <label for="late">Running late <b id="lateLabel">on time</b></label>
+            <input id="late" type="range" min="0" max="45" value="0" step="5" />
+          </div>
+          <ol class="clock-list" id="clockList"></ol>
+        </div>
+        <div class="tool">
+          <h3>Score Lamsing–Rhenimi</h3>
+          <p>Three rounds on the bout sheet. Give the clearer fighter 10 and the other 9. A drawn round is 10–10. A knockdown, if you see one, is really a 10–8. This toy stays at 10–9 so you can keep a clean card from your seat.</p>
+          <div class="rounds" id="rounds"></div>
+          <div class="verdict" id="verdict">Tap a name each round.</div>
         </div>
       </div>
     </section>
@@ -1022,7 +1295,187 @@
       <li><a href="https://www.onefc.com/news/prajanchai-booked-to-return-against-wang-junguang-in-kickboxing-bout-at-the-inner-circle-35/">Prajanchai’s return, in ONE’s words</a></li>
       <li><a href="https://lumpineestadium.com/fights/one-friday-fights-16-october-2026">Lumpinee Stadium event page</a> — doors, address, Pink Line, CAT 3 price</li>
       <li><a href="https://www.lumpinee-rajadamnern.com/event-details/one-friday-fights-175-the-inner-circle-35-2026-10-16-18-30">Ticket listing for this date</a> — CAT 1, 2, and 3 prices</li>
+      <li><a href="https://www.tapology.com/fightcenter/events/147734-one-friday-fights-175">Tapology bout sheet</a> — reported scale weights and three-round distance</li>
+      <li><a href="https://www.sherdog.com/events/One-Championship-One-Friday-Fights-175-114701">Sherdog</a> — listed records for the two MMA bouts</li>
+      <li><a href="https://www.beinsports.com/en-us/mixed-martial-arts/one-championship/articles/lamsing-vs-rhenimi-headlines-one-friday-fights-175-full-card-revealed-2026-10-16">beIN card notes</a> — Lamsing, Rhenimi, Mahesuan, Bakjo</li>
     </ul>
   </footer>
+  <script>
+    const bouts = [
+      {
+        sport: "kb", mins: 16, photo: "img/ring-night.jpg",
+        tag: "Kickboxing · straw · 3×3",
+        title: "Yang Guiyao vs Shosuke Iwanaga",
+        a: ["Yang Guiyao", "China · 124.6 lb"],
+        b: ["Shosuke Iwanaga", "Japan · 22 · 170 cm · 124.8 lb"],
+        watch: "First fight of the broadcast, and a rules reset. Bigger gloves, no elbows, no long clinch. Both weighed a shade under the 125-pound strawweight limit. Iwanaga is listed at 22 and tall for the weight. Watch the kicks anyway. A kickboxing round is still won by damage, not by who looks busier."
+      },
+      {
+        sport: "mma", mins: 26, photo: "img/ring-night.jpg",
+        tag: "MMA · flyweight · 3×5",
+        title: "Ashok Bagade vs Yuto Shioya",
+        a: ["Ashok Bagade", "India · 135.0 lb · listed 4–0"],
+        b: ["Yuto Shioya", "Japan · 134.2 lb · listed 6–2"],
+        watch: "The rounds jump from three minutes to five, and the fight is allowed to hit the canvas. ONE lists this as flyweight. The scale agrees: both men weighed right at 135 pounds. A takedown is the plan, not a pause. Judges score the whole bout as one piece, so there is no 10–9 to scribble between rounds."
+      },
+      {
+        sport: "mt", mins: 20, photo: "img/clinch-light.jpg",
+        tag: "Muay Thai · straw · 3×3",
+        title: "Hatthep vs Pichai",
+        a: ["Hatthep Sor Sasiwat", "Thailand · 114.6 lb"],
+        b: ["Pichai Mor Rajabhatkorat", "Thailand · 115.8 lb"],
+        watch: "A Thai-versus-Thai fight contracted at strawweight, up to 125 pounds. Both came in near 115. Expect the speed of the smaller class, the wai khru back in front of the fight, and elbows legal again. This is the bout where the room starts to feel like Lumpinee rather than a kickboxing telecast."
+      },
+      {
+        sport: "mma", mins: 26, photo: "img/ring-night.jpg",
+        tag: "MMA · straw · 3×5",
+        title: "Cabrera vs Hutagaol",
+        a: ["Javier Cabrera", "Spain · 124.0 lb · listed 3–0"],
+        b: ["Sanjaya Hutagaol", "Indonesia · 123.6 lb · 163 cm · listed 5–1"],
+        watch: "The second mat fight, and the smaller one. Both weighed about 124 pounds. Hutagaol fights under the name Banteng Toba, the Toba bull, and he is listed at 5 foot 4. Watch the level change. If it stays standing, it can look like a short Muay Thai fight in small gloves. The finish, if it comes, is more likely a neck or an arm."
+      },
+      {
+        sport: "mt", mins: 20, photo: "img/clinch-light.jpg",
+        tag: "Muay Thai · straw · 3×3",
+        title: "Tepatip vs Chokpreecha",
+        a: ["Tepatip Champkhaomootod", "Thailand · 123.2 lb"],
+        b: ["Chokpreecha PK", "Thailand · PK Saenchai · 123.8 lb"],
+        watch: "Both men weighed just under the strawweight limit. Tepatip already has a first-round finish on this series, at Friday Fights 157. Chokpreecha comes out of the PK Saenchai camp, the same gym name you saw on Prajanchai. Elbows and the clinch are the Lumpinee part of the fight. The third round is the one the band sprints through."
+      },
+      {
+        sport: "mt", mins: 20, photo: "img/clinch-light.jpg",
+        tag: "Muay Thai · fly · 3×3",
+        title: "Slatan vs Babak Haghi",
+        a: ["Slatan Jitmuangnon", "Thailand · 168 cm · 134.6 lb"],
+        b: ["Babak Haghi", "Iran · 134.4 lb"],
+        watch: "A true flyweight scale: both men weighed a whisker under 135. Slatan, from Jitmuangnon, is listed at 5 foot 6. Babak stopped Chamanow in the first round at Friday Fights 166, so the Iranian is not here to coast. If a leg kick makes someone change feet, that is the round."
+      },
+      {
+        sport: "mt", mins: 20, photo: "img/ring-night.jpg",
+        tag: "Muay Thai · bantam · 3×3",
+        title: "Kampeetewada vs Anuar",
+        a: ["Kampeetewada Sitthikul", "Thailand · 136.2 lb"],
+        b: ["Anuar Cisneros", "Mexico · 135.8 lb"],
+        watch: "The only bantamweight contract on the show, which means a ceiling of 145 pounds. Nobody used it. Both scaled just over 136, so they will look like the flyweights who fought before them. Kampeetewada is the long Thai. Anuar is the visitor. Kicks travel farther when the man throwing them has the reach."
+      },
+      {
+        sport: "mt", mins: 22, photo: "img/clinch-light.jpg",
+        tag: "Muay Thai · atom · co-main · 3×3",
+        title: "Mahesuan vs Bakjo",
+        a: ["Mahesuan Aekmuangnon", "Thailand · 26 · 114.6 lb"],
+        b: ["Bakjo Sitkhunma", "Thailand · 21 · 170 cm · 114.6 lb"],
+        watch: "The co-main, and the best Thai fight of the television card. Both weighed 114.6 pounds, right on the atomweight line. Bakjo is listed at 5 foot 7, which is a lot of limb for 115 pounds. Mahesuan is 26, with a career record of 81–21 and two recent stoppages. Bakjo is 21, with 48 career wins and no loss yet in ONE, including a second-round knockout at Friday Fights 156. Knees in the clinch decide a fight built like this."
+      },
+      {
+        sport: "mt", mins: 22, photo: "img/clinch-light.jpg",
+        tag: "Muay Thai · fly · main event · 3×3",
+        title: "Lamsing vs Rhenimi",
+        a: ["Lamsing", "Thailand · 30 · 125.4 lb"],
+        b: ["Abdessamie Rhenimi", "Fez · 19 · 125.2 lb"],
+        watch: "Last fight of the night. The contract is the prize, not a belt. Lamsing is 30, career 73–18, 7–2 in ONE, on a three-fight streak. Rhenimi is 19, from Fez, 1–3 in ONE, and he needs the win more. The odd part is the scale: a flyweight bout, ceiling 135, and both men weighed about 125. It should look fast, not heavy. Three rounds of three minutes. Keep a card in the box below."
+      }
+    ];
+
+    const reel = document.getElementById("reel");
+    const stage = document.getElementById("stage");
+    const photo = document.getElementById("stagePhoto");
+    const body = document.getElementById("stageBody");
+    let current = 0;
+
+    function render(i) {
+      current = i;
+      const b = bouts[i];
+      stage.dataset.sport = b.sport;
+      stage.classList.add("is-in");
+      [...reel.children].forEach((btn, n) => btn.setAttribute("aria-selected", String(n === i)));
+      window.setTimeout(() => {
+        photo.src = b.photo;
+        photo.alt = b.title;
+        body.innerHTML =
+          '<div class="stage-meta">' + b.tag + "</div>" +
+          "<h3>" + b.title + "</h3>" +
+          '<div class="stage-stats"><div><b>' + b.a[0] + "</b><span>" + b.a[1] + "</span></div><div><b>" + b.b[0] + "</b><span>" + b.b[1] + "</span></div></div>" +
+          "<p>" + b.watch + "</p>";
+        stage.classList.remove("is-in");
+      }, 180);
+    }
+
+    bouts.forEach((b, i) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.setAttribute("role", "tab");
+      btn.innerHTML = '<span class="idx">' + String(i + 1).padStart(2, "0") + "</span><span>" + b.title.split(" vs ")[0] + '</span><small>' + b.tag.split(" · ")[0] + "</small>";
+      btn.addEventListener("click", () => render(i));
+      reel.appendChild(btn);
+    });
+    render(0);
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "ArrowDown" && e.key !== "ArrowUp" && e.key !== "ArrowRight" && e.key !== "ArrowLeft") return;
+      if (!stage.contains(document.activeElement) && !reel.contains(document.activeElement)) return;
+      e.preventDefault();
+      const dir = (e.key === "ArrowDown" || e.key === "ArrowRight") ? 1 : -1;
+      render((current + dir + bouts.length) % bouts.length);
+    });
+
+    const late = document.getElementById("late");
+    const lateLabel = document.getElementById("lateLabel");
+    const clockList = document.getElementById("clockList");
+    function fmt(mins) {
+      const h = Math.floor(mins / 60) % 24;
+      const m = mins % 60;
+      const am = h < 12 ? "am" : "pm";
+      const hr = ((h + 11) % 12) + 1;
+      return hr + ":" + String(m).padStart(2, "0") + " " + am;
+    }
+    function paintClock() {
+      const slip = Number(late.value);
+      lateLabel.textContent = slip === 0 ? "on time" : slip + " min late";
+      let t = 20 * 60 + 30 + slip;
+      clockList.innerHTML = bouts.map((b) => {
+        const label = fmt(t);
+        t += b.mins;
+        const short = b.title.replace(" vs ", " – ");
+        return "<li><time>" + label + "</time><span>" + short + "</span><span>" + b.mins + "m</span></li>";
+      }).join("");
+    }
+    late.addEventListener("input", paintClock);
+    paintClock();
+
+    const roundsEl = document.getElementById("rounds");
+    const verdict = document.getElementById("verdict");
+    const picks = [null, null, null];
+    function paintScore() {
+      roundsEl.innerHTML = "";
+      for (let r = 0; r < 3; r++) {
+        const box = document.createElement("div");
+        box.className = "round";
+        box.innerHTML = "<b>Round " + (r + 1) + "</b>";
+        [["a", "Lamsing"], ["even", "Even"], ["b", "Rhenimi"]].forEach(([key, name]) => {
+          const btn = document.createElement("button");
+          btn.type = "button";
+          btn.textContent = name;
+          btn.setAttribute("aria-pressed", String(picks[r] === key));
+          btn.addEventListener("click", () => { picks[r] = key; paintScore(); });
+          box.appendChild(btn);
+        });
+        roundsEl.appendChild(box);
+      }
+      if (picks.some((p) => !p)) {
+        verdict.textContent = "Tap a name each round.";
+        return;
+      }
+      let a = 0, b = 0;
+      picks.forEach((p) => {
+        if (p === "a") { a += 10; b += 9; }
+        else if (p === "b") { a += 9; b += 10; }
+        else { a += 10; b += 10; }
+      });
+      if (a === b) verdict.textContent = "You have a draw, " + a + "–" + b + ".";
+      else if (a > b) verdict.textContent = "You have Lamsing, " + a + "–" + b + ".";
+      else verdict.textContent = "You have Rhenimi, " + b + "–" + a + ".";
+    }
+    paintScore();
+  </script>
 </body>
 </html>
