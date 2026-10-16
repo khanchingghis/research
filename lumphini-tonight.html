@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tonight at Lumpinee — a first-timer’s field guide</title>
+  <meta name="description" content="A concise visual guide to ONE Friday Fights 175 and The Inner Circle 35 at Lumpinee Stadium, Bangkok, 16 October 2026. Muay Thai, kickboxing, and MMA for someone seeing it live for the first time." />
+  <meta property="og:title" content="Tonight at Lumpinee — a first-timer’s field guide" />
+  <meta property="og:description" content="What you are watching, who matters, how a round is scored, and how to be in the right building. ONE Championship, 16 October 2026." />
+  <meta property="og:type" content="article" />
+  <meta name="theme-color" content="#100e0c" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect fill='%23100e0c' width='32' height='32'/%3E%3Crect x='6' y='8' width='20' height='16' fill='none' stroke='%23e2c27a' stroke-width='2'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,640&family=Noto+Sans+Thai:wght@500;600&family=Outfit:wght@380;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #100e0c;
+      --raise: #191512;
+      --plate: #221c17;
+      --plate-2: #2a231c;
+      --line: rgba(226, 194, 122, 0.28);
+      --line-soft: rgba(244, 236, 223, 0.1);
+      --gold: #e2c27a;
+      --gold-2: #f0d7a2;
+      --cream: #f4ecdf;
+      --dim: #cbbfaa;
+      --muted: #9a8d7c;
+      --red: #e25b45;
+      --teal: #8fd0cb;
+      --blue: #9ebbe0;
+      --violet: #c4b4ee;
+      --green: #9dcc96;
+      --serif: "Fraunces", "Iowan Old Style", Palatino, Georgia, serif;
+      --sans: "Outfit", "Avenir Next", "Segoe UI", sans-serif;
+      --max: 1080px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(1200px 500px at 80% -10%, rgba(226, 91, 69, 0.16), transparent 55%),
+        radial-gradient(900px 420px at -10% 20%, rgba(226, 194, 122, 0.08), transparent 50%),
+        var(--bg);
+      color: var(--cream);
+      font-family: var(--sans);
+      font-size: 1.05rem;
+      line-height: 1.55;
+      font-weight: 380;
+    }
+    img, svg { max-width: 100%; }
+    a { color: var(--gold-2); text-underline-offset: 0.18em; }
+    a:hover { color: white; }
+    h1, h2, h3, p { margin: 0; }
+    h1, h2, h3 { font-family: var(--serif); font-weight: 500; letter-spacing: -0.02em; }
+
+    .skip {
+      position: absolute;
+      left: 1rem;
+      top: -4rem;
+      background: var(--gold);
+      color: #1a140c;
+      padding: 0.5rem 0.8rem;
+      z-index: 10;
+    }
+    .skip:focus { top: 1rem; }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      display: flex;
+      gap: 1.1rem;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.75rem 1.25rem;
+      background: rgba(16, 14, 12, 0.9);
+      border-bottom: 1px solid var(--line-soft);
+      backdrop-filter: blur(10px);
+    }
+    .brand {
+      font-family: var(--serif);
+      color: var(--gold);
+      text-decoration: none;
+      font-size: 1.05rem;
+    }
+    .nav-links {
+      display: flex;
+      gap: 0.9rem;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+    .nav-links a {
+      color: var(--dim);
+      text-decoration: none;
+      font-size: 0.82rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .nav-links a:hover { color: var(--cream); }
+
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 0 1.25rem; }
+    section { padding: 4.2rem 0; }
+    .kicker {
+      color: var(--gold);
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .thai {
+      font-family: "Noto Sans Thai", var(--serif);
+      color: var(--dim);
+      font-size: 1.15rem;
+    }
+    h1 {
+      font-size: clamp(2.7rem, 7vw, 5.2rem);
+      line-height: 0.95;
+      margin: 0.35rem 0 1rem;
+      font-weight: 640;
+    }
+    h2 {
+      font-size: clamp(1.8rem, 4vw, 2.7rem);
+      line-height: 1.05;
+      margin: 0.3rem 0 0.8rem;
+    }
+    .lede {
+      font-size: 1.18rem;
+      color: var(--dim);
+      max-width: 40rem;
+    }
+    .section-intro { max-width: 38rem; color: var(--dim); margin-bottom: 1.6rem; }
+
+    .hero { padding: 2.2rem 0 1rem; }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 2rem;
+      align-items: end;
+    }
+    .facts {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.7rem;
+      margin-top: 1.8rem;
+    }
+    .fact {
+      border-top: 1px solid var(--line);
+      padding-top: 0.7rem;
+    }
+    .fact b {
+      display: block;
+      font-family: var(--serif);
+      font-size: 1.45rem;
+      font-weight: 500;
+      color: white;
+    }
+    .fact span { color: var(--muted); font-size: 0.86rem; }
+
+    .ring-card {
+      background: var(--plate);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 0.9rem 0.9rem 0.7rem;
+    }
+    .ring-card figcaption {
+      color: var(--muted);
+      font-size: 0.82rem;
+      padding: 0.35rem 0.3rem 0.2rem;
+    }
+
+    .remember {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+    }
+    .remember article {
+      background: var(--raise);
+      border: 1px solid var(--line-soft);
+      border-radius: 16px;
+      padding: 1.1rem 1.15rem 1.15rem;
+      min-height: 100%;
+    }
+    .num {
+      font-family: var(--serif);
+      color: var(--gold);
+      font-size: 1.3rem;
+    }
+    .remember h3 { font-size: 1.35rem; margin: 0.25rem 0 0.4rem; }
+    .remember p { color: var(--dim); }
+
+    .rail { position: relative; margin: 0; padding: 0; list-style: none; }
+    .rail::before {
+      content: "";
+      position: absolute;
+      left: 7px;
+      top: 6px;
+      bottom: 6px;
+      width: 2px;
+      background: linear-gradient(var(--gold), var(--red));
+    }
+    .rail li {
+      position: relative;
+      padding: 0 0 1.35rem 2rem;
+    }
+    .rail li:last-child { padding-bottom: 0; }
+    .dot {
+      position: absolute;
+      left: 0;
+      top: 0.35rem;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--bg);
+      border: 2px solid var(--gold);
+    }
+    .rail .when {
+      color: var(--gold);
+      font-weight: 600;
+      font-size: 0.92rem;
+      letter-spacing: 0.04em;
+    }
+    .rail strong { font-weight: 600; }
+    .rail p { color: var(--dim); margin-top: 0.15rem; }
+    .pill {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 0.12rem 0.5rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-weight: 600;
+      vertical-align: middle;
+    }
+    .mt { background: rgba(226, 91, 69, 0.18); color: #ffb1a4; }
+    .kb { background: rgba(143, 208, 203, 0.15); color: var(--teal); }
+    .mma { background: rgba(196, 180, 238, 0.16); color: var(--violet); }
+
+    .fights { display: grid; gap: 1rem; }
+    .fight {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 0.6rem 1rem;
+      background: var(--raise);
+      border: 1px solid var(--line-soft);
+      border-radius: 18px;
+      padding: 1.15rem;
+      align-items: stretch;
+    }
+    .fight header {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.45rem 0.7rem;
+      align-items: center;
+      color: var(--muted);
+      font-size: 0.82rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+    .fighter b { display: block; font-family: var(--serif); font-size: clamp(1.45rem, 3vw, 2rem); font-weight: 500; line-height: 1.05; }
+    .fighter span { display: block; color: var(--muted); font-size: 0.92rem; }
+    .fighter.right { text-align: right; }
+    .vs {
+      align-self: center;
+      color: var(--gold);
+      font-family: var(--serif);
+      font-size: 1.1rem;
+    }
+    .why {
+      grid-column: 1 / -1;
+      border-top: 1px solid var(--line-soft);
+      padding-top: 0.8rem;
+      color: var(--dim);
+    }
+    .why strong { color: var(--cream); font-weight: 600; }
+
+    .scales {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 1.2rem;
+      align-items: center;
+      margin: 1.4rem 0 0.4rem;
+    }
+    .scale-label { color: var(--muted); font-size: 0.88rem; }
+    .bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.35rem;
+    }
+    .bar i {
+      display: block;
+      background: var(--plate);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 0.55rem 0.4rem 0.5rem;
+      text-align: center;
+      font-style: normal;
+    }
+    .bar b { display: block; font-family: var(--serif); font-size: 1.15rem; font-weight: 500; }
+    .bar span { color: var(--muted); font-size: 0.75rem; }
+    .bar .hot { background: rgba(226, 194, 122, 0.12); }
+
+    .card-block { margin-top: 1.5rem; }
+    .card-block h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.7rem;
+    }
+    .bout {
+      display: grid;
+      grid-template-columns: 4.6rem minmax(0, 1fr) auto minmax(0, 1fr);
+      gap: 0.4rem 0.75rem;
+      align-items: center;
+      padding: 0.72rem 0;
+      border-top: 1px solid var(--line-soft);
+    }
+    .bout .pill {
+      letter-spacing: 0.04em;
+      white-space: nowrap;
+    }
+    .bout .tags { display: flex; flex-direction: column; gap: 0.25rem; align-items: flex-start; }
+    .wt { color: var(--muted); font-size: 0.75rem; letter-spacing: 0.04em; text-transform: uppercase; }
+    .name { font-weight: 500; }
+    .from { display: block; color: var(--muted); font-size: 0.8rem; }
+    .bout .right { text-align: right; }
+    .star-row { background: linear-gradient(90deg, rgba(226, 194, 122, 0.08), transparent 70%); margin: 0 -0.4rem; padding-left: 0.4rem; padding-right: 0.4rem; border-radius: 8px; }
+
+    .rules {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.8rem;
+    }
+    .rule {
+      background: var(--plate);
+      border-radius: 16px;
+      padding: 1rem;
+      border: 1px solid var(--line-soft);
+    }
+    .rule h3 { font-size: 1.45rem; margin-bottom: 0.15rem; }
+    .rule .meta { color: var(--gold); font-size: 0.86rem; margin-bottom: 0.8rem; }
+    .weapons { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.35rem; }
+    .weapons li {
+      display: flex;
+      justify-content: space-between;
+      gap: 0.5rem;
+      padding: 0.38rem 0.15rem;
+      border-bottom: 1px solid var(--line-soft);
+      color: var(--dim);
+    }
+    .on { color: var(--green); font-weight: 600; }
+    .off { color: #8a5a52; font-weight: 600; }
+    .note {
+      margin-top: 1rem;
+      padding: 0.9rem 1rem;
+      border-left: 3px solid var(--gold);
+      color: var(--dim);
+      background: rgba(226, 194, 122, 0.05);
+    }
+
+    .plates {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 0.9rem;
+    }
+    .plate {
+      background: var(--plate);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 0.8rem 0.9rem 1rem;
+    }
+    .plate h3 { font-size: 1.4rem; margin: 0.2rem 0.2rem 0.2rem; }
+    .plate p { color: var(--dim); margin: 0.35rem 0.2rem 0; }
+    .calls { display: grid; grid-template-columns: 1fr 1fr; gap: 0.55rem; margin-top: 0.7rem; }
+    .calls div {
+      background: var(--bg);
+      border-radius: 12px;
+      padding: 0.65rem 0.7rem;
+    }
+    .calls b { display: block; font-size: 0.95rem; }
+    .calls span { color: var(--muted); font-size: 0.84rem; }
+
+    .scores { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.7rem; margin-top: 0.8rem; }
+    .ticket {
+      background: var(--cream);
+      color: #241910;
+      border-radius: 14px;
+      padding: 0.8rem 0.85rem;
+    }
+    .ticket .score {
+      font-family: var(--serif);
+      font-size: 2rem;
+      line-height: 1;
+    }
+    .ticket p { color: #5c4d3e; font-size: 0.9rem; margin-top: 0.35rem; }
+    .ticket.rare { opacity: 0.78; }
+    .ticket.kd { background: #f0d2b0; }
+
+    .tempo { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem; margin-top: 0.8rem; }
+    .tempo div { background: var(--bg); border-radius: 12px; padding: 0.7rem; }
+    .tempo b { display: block; margin-bottom: 0.45rem; }
+    .eq { display: flex; align-items: flex-end; gap: 3px; height: 42px; }
+    .eq i {
+      display: block;
+      width: 5px;
+      background: var(--gold);
+      border-radius: 3px 3px 0 0;
+      transform-origin: bottom;
+    }
+    .eq.fast i { animation: hop 0.45s ease-in-out infinite alternate; }
+    .eq.mid i { animation: hop 0.8s ease-in-out infinite alternate; }
+    .eq.slow i { animation: hop 1.4s ease-in-out infinite alternate; }
+    .eq i:nth-child(2) { animation-delay: 0.1s; }
+    .eq i:nth-child(3) { animation-delay: 0.18s; }
+    .eq i:nth-child(4) { animation-delay: 0.05s; }
+    .eq i:nth-child(5) { animation-delay: 0.22s; }
+    .eq i:nth-child(6) { animation-delay: 0.12s; }
+    .eq i:nth-child(7) { animation-delay: 0.28s; }
+    @keyframes hop { from { transform: scaleY(0.45); } to { transform: scaleY(1); } }
+
+    .steps { list-style: none; padding: 0; margin: 0.6rem 0 0; display: grid; gap: 0.55rem; }
+    .steps li { display: grid; grid-template-columns: auto 1fr; gap: 0.7rem; align-items: start; }
+    .steps em {
+      font-style: normal;
+      font-family: var(--serif);
+      color: var(--gold);
+      font-size: 1.3rem;
+      line-height: 1;
+    }
+
+    .go {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 0.9rem;
+    }
+    .warn {
+      background: #2a1612;
+      border: 1px solid rgba(226, 91, 69, 0.45);
+      border-radius: 16px;
+      padding: 1rem 1.05rem;
+    }
+    .warn h3 { color: #ffb1a4; font-size: 1.4rem; }
+    .pin {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.6rem;
+      margin-top: 0.8rem;
+    }
+    .pin div { background: rgba(0,0,0,0.25); border-radius: 12px; padding: 0.7rem; }
+    .pin b { display: block; }
+    .pin span { color: var(--dim); font-size: 0.88rem; }
+    .good { outline: 1px solid var(--gold); }
+    .prices { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.55rem; margin-top: 0.8rem; }
+    .prices div { background: var(--bg); border-radius: 12px; padding: 0.7rem; }
+    .prices b { font-family: var(--serif); font-size: 1.4rem; font-weight: 500; display: block; }
+
+    .watch-grid { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 1rem; }
+    .clocks { display: grid; gap: 0.45rem; }
+    .clocks div {
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      border-bottom: 1px solid var(--line-soft);
+      padding: 0.4rem 0;
+    }
+    .clocks span { color: var(--muted); }
+
+    footer {
+      border-top: 1px solid var(--line-soft);
+      padding: 1.5rem 0 2.5rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    footer ul { margin: 0.4rem 0 0; padding-left: 1.1rem; }
+    footer li { margin: 0.2rem 0; }
+
+    @media (max-width: 860px) {
+      .hero-grid, .remember, .rules, .plates, .scores, .go, .watch-grid, .scales {
+        grid-template-columns: 1fr;
+      }
+      .facts { grid-template-columns: 1fr 1fr; }
+      .fight { grid-template-columns: 1fr; }
+      .fighter.right { text-align: left; }
+      .fight .vs { justify-self: start; }
+      .bout { grid-template-columns: 1fr; }
+      .bout .tags { flex-direction: row; align-items: center; }
+      .bout .right { text-align: left; }
+      .tempo, .prices, .pin { grid-template-columns: 1fr; }
+      .nav { flex-wrap: wrap; }
+      .nav-links { gap: 0.55rem 0.75rem; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .eq i { animation: none !important; }
+    }
+    @media print {
+      body { background: white; color: black; }
+      .nav, .eq i { display: none; }
+      a { color: black; }
+      .ticket, .plate, .rule, .fight, .remember article { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#tonight">Skip to the guide</a>
+  <header class="nav">
+    <a class="brand" href="#top">Lumpinee, tonight</a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#tonight">The night</a>
+      <a href="#fights">Fights</a>
+      <a href="#rules">Rules</a>
+      <a href="#scoring">Scoring</a>
+      <a href="#arrival">Getting there</a>
+      <a href="#watch">Watch</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero wrap">
+      <p class="kicker">Field guide · Friday 16 October 2026</p>
+      <div class="hero-grid">
+        <div>
+          <p class="thai">คืนนี้ที่เวทีลุมพินี</p>
+          <h1>Tonight at Lumpinee</h1>
+          <p class="lede">A first night of ONE Championship, with the homework already done. Two shows, fourteen fights, three sports, one ring. No world title is on the line. The best fighter in the building still goes before 8:30.</p>
+          <div class="facts" aria-label="Night at a glance">
+            <div class="fact"><b>5:30</b><span>Doors, Bangkok time</span></div>
+            <div class="fact"><b>6:30</b><span>Inner Circle 35</span></div>
+            <div class="fact"><b>8:30</b><span>Friday Fights 175</span></div>
+            <div class="fact"><b>14</b><span>Fights, one ticket</span></div>
+          </div>
+        </div>
+        <figure class="ring-card">
+          <svg viewBox="0 0 420 280" role="img" aria-labelledby="ringTitle ringDesc">
+            <title id="ringTitle">A Muay Thai ring from above</title>
+            <desc id="ringDesc">Cream canvas, red corner at the near left, blue corner at the far right, four rope lines, and a three-piece band along the near side.</desc>
+            <rect width="420" height="280" rx="12" fill="#1a1512"/>
+            <rect x="78" y="36" width="264" height="188" fill="#6a3b32"/>
+            <rect x="108" y="58" width="204" height="144" fill="#f3e6d2"/>
+            <g fill="none" stroke="#c23b2e" stroke-width="3">
+              <rect x="96" y="48" width="228" height="164"/>
+              <rect x="90" y="43" width="240" height="174"/>
+            </g>
+            <g fill="none" stroke="#2f5f8a" stroke-width="3">
+              <rect x="102" y="53" width="216" height="154"/>
+              <rect x="84" y="38" width="252" height="184"/>
+            </g>
+            <circle cx="96" cy="48" r="7" fill="#e25b45"/>
+            <circle cx="324" cy="48" r="7" fill="#9ebbe0"/>
+            <circle cx="96" cy="212" r="7" fill="#e2c27a"/>
+            <circle cx="324" cy="212" r="7" fill="#e2c27a"/>
+            <circle cx="188" cy="128" r="9" fill="#e25b45"/>
+            <circle cx="230" cy="136" r="9" fill="#9ebbe0"/>
+            <g transform="translate(28,228)">
+              <rect width="364" height="28" rx="8" fill="#2a231c"/>
+              <circle cx="150" cy="14" r="4" fill="#e2c27a"/>
+              <rect x="162" y="8" width="16" height="12" rx="2" fill="#e2c27a"/>
+              <rect x="186" y="6" width="8" height="16" rx="2" fill="#f4ecdf"/>
+              <rect x="198" y="6" width="8" height="16" rx="2" fill="#f4ecdf"/>
+              <text x="214" y="18" fill="#cbbfaa" font-family="Outfit, sans-serif" font-size="11">sarama band</text>
+            </g>
+            <text x="112" y="28" fill="#ffb1a4" font-family="Outfit, sans-serif" font-size="11">red corner</text>
+            <text x="286" y="28" fill="#9ebbe0" font-family="Outfit, sans-serif" font-size="11">blue</text>
+          </svg>
+          <figcaption>Same square all night. The rules inside it change with the bout.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="wrap" style="padding-top: 1.5rem;">
+      <div class="remember">
+        <article>
+          <div class="num">01</div>
+          <h3>Three sports, one ring</h3>
+          <p>Most of the card is Muay Thai. Two bouts are kickboxing. Two are MMA. Elbows, then no elbows, then wrestling. The section below is the whole difference.</p>
+        </article>
+        <article>
+          <div class="num">02</div>
+          <h3>See Prajanchai early</h3>
+          <p>He is the ONE strawweight Muay Thai world champion, and he closes the 6:30 show. Walk in at 8:30 and you have missed him.</p>
+        </article>
+        <article>
+          <div class="num">03</div>
+          <h3>Damage is the score</h3>
+          <p>A pretty kick that changes nothing loses the round to a messy punch that hurts. Judges are counting harm, not manners.</p>
+        </article>
+        <article>
+          <div class="num">04</div>
+          <h3>Ram Inthra, not the park</h3>
+          <p>The working Lumpinee is on Ram Inthra in Bang Khen. Lumphini Park and the old Rama IV site are the wrong side of Bangkok.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="tonight" class="wrap">
+      <p class="kicker">01 · The night</p>
+      <h2>Two shows. Stay through the handoff.</h2>
+      <p class="section-intro">Your ticket covers both. The early show streams on live.onefc.com. The main card, from 8:30, is the one on YouTube, Facebook, and Thai Channel 7.</p>
+      <ol class="rail">
+        <li>
+          <span class="dot" aria-hidden="true"></span>
+          <div class="when">5:30 pm</div>
+          <strong>Doors</strong>
+          <p>Give the line and the bag check some time. The first fight is worth seeing cold, because the ritual is easier to follow before the building is roaring.</p>
+        </li>
+        <li>
+          <span class="dot" aria-hidden="true"></span>
+          <div class="when">6:30–8:30 · The Inner Circle 35</div>
+          <strong>Five fights. Prajanchai is the last of them.</strong>
+          <p>Johan Ghazali versus Diego Paez is the fight before him. Five bouts share those two hours, so be seated by 7:30 if those two are why you came.</p>
+        </li>
+        <li>
+          <span class="dot" aria-hidden="true"></span>
+          <div class="when">8:30–11:30 · ONE Friday Fights 175</div>
+          <strong>Nine more. Lamsing versus Rhenimi is the last.</strong>
+          <p>This half is where a win can turn into a US$100,000 contract and a spot on ONE’s global roster. The headliner is the final bout, often close to 11.</p>
+        </li>
+      </ol>
+    </section>
+
+    <section id="fights" class="wrap">
+      <p class="kicker">02 · Who matters</p>
+      <h2>Learn three names. The rest will explain itself.</h2>
+      <p class="section-intro">Records below are the ones published for this card. A career record and an ONE record are different numbers, so they are labeled that way.</p>
+
+      <div class="fights">
+        <article class="fight">
+          <header>
+            <span class="pill kb">Kickboxing</span>
+            <span>Strawweight · up to 125 lb / 57 kg · 3 rounds · last bout of the 6:30 show</span>
+          </header>
+          <div class="fighter">
+            <b>Prajanchai</b>
+            <span>Pongsuphan PK · Thailand</span>
+            <span>ONE strawweight Muay Thai world champion</span>
+          </div>
+          <div class="vs">vs</div>
+          <div class="fighter right">
+            <b>Wang Junguang</b>
+            <span>China · “The Warrior”</span>
+            <span>Former title challenger, back after six years</span>
+          </div>
+          <p class="why"><strong>Watch him because he is the champion, and watch the rules because the belt stays in the locker.</strong> This is kickboxing, three rounds, after more than a year out following surgery on a finger. He used to hold the kickboxing belt too, until Jonathan Di Bella took it in October 2025. Wang wants a knockout and has called the return his last chance. Bigger gloves. Elbows are a foul. Speed against pressure.</p>
+        </article>
+
+        <article class="fight">
+          <header>
+            <span class="pill mt">Muay Thai</span>
+            <span>Flyweight · up to 135 lb / 61 kg · main event, last bout of the night</span>
+          </header>
+          <div class="fighter">
+            <b>Lamsing</b>
+            <span>T1 Fight Academy · Thailand · 30</span>
+            <span>Career 73–18 · 7–2 in ONE · three wins in a row</span>
+          </div>
+          <div class="vs">vs</div>
+          <div class="fighter right">
+            <b>Rhenimi</b>
+            <span>Abdessamie · Fez, Morocco · 19</span>
+            <span>1–3 in ONE · lost his last two</span>
+          </div>
+          <p class="why"><strong>The experience-against-youth fight, with a contract hanging on it.</strong> Lamsing’s recent wins include a decision over Fakhriddin Khasanov and a first-round knockout of Plaipayak. Rhenimi is the younger puncher, and he needs the night more. Both men have a recent loss to the same fighter, Denkriangkrai. Undercard bouts are three rounds. This one has been listed as three and as five. The announcer will settle it before the bell.</p>
+        </article>
+
+        <article class="fight">
+          <header>
+            <span class="pill mt">Muay Thai</span>
+            <span>Flyweight · 3 rounds · just before Prajanchai</span>
+          </header>
+          <div class="fighter">
+            <b>Johan Ghazali</b>
+            <span>“Jojo” · Malaysia / United States</span>
+            <span>8–5 in ONE, six of the wins by knockout</span>
+          </div>
+          <div class="vs">vs</div>
+          <div class="fighter right">
+            <b>Diego Paez</b>
+            <span>Colombia / United States</span>
+            <span>Won their first meeting by split decision</span>
+          </div>
+          <p class="why"><strong>A rematch of a fight the judges barely split.</strong> Paez beat him at ONE Fight Night 32. Ghazali is treating Lumpinee as the correction. When a first fight is a split decision, round three usually decides the return. That is the round when the band starts sprinting.</p>
+        </article>
+      </div>
+
+      <div class="scales">
+        <div class="scale-label">Everyone tonight is in one of these four weights. Small people, very fast. The heavy hit is speed.</div>
+        <div class="bar" role="img" aria-label="Atomweight 115 pounds, strawweight 125, flyweight 135, bantamweight 145. Most of the card is 115 to 135.">
+          <i><b>115</b><span>Atom</span></i>
+          <i class="hot"><b>125</b><span>Straw</span></i>
+          <i class="hot"><b>135</b><span>Fly</span></i>
+          <i><b>145</b><span>Bantam</span></i>
+        </div>
+      </div>
+      <p class="section-intro" style="margin-top:0.8rem;">Pounds are the upper limit of the class, fought only if the fighter has passed ONE’s hydration test. They are not allowed to dry themselves down to the number.</p>
+
+      <div class="card-block" id="card">
+        <h3>The Inner Circle 35 · from 6:30</h3>
+        <p class="scale-label" style="margin-bottom:0.4rem;">MT is Muay Thai, KB is kickboxing. Highlighted rows are the three fights above. Earliest bout first.</p>
+        <div class="bout star-row">
+          <div class="tags"><span class="pill mt">MT</span><span class="wt">Straw</span></div>
+          <div><span class="name">Face Erawan</span><span class="from">Thailand</span></div>
+          <div class="vs">vs</div>
+          <div class="right"><span class="name">Valerii Strungari</span><span class="from">Moldova</span></div>
+        </div>
+        <div class="bout">
+          <div class="tags"><span class="pill mt">MT</span><span class="wt">Atom</span></div>
+          <div><span class="name">Olivia Bahsous</span><span class="from">Canada · 2–0 in ONE, both stoppages</span></div>
+          <div class="vs">vs</div>
+          <div class="right"><span class="name">Malia Weaver</span><span class="from">United States · ONE debut</span></div>
+        </div>
+        <div class="bout">
+          <div class="tags"><span class="pill mt">MT</span><span class="wt">Fly</span></div>
+          <div><span class="name">Jaradchai Maxjandee</span><span class="from">Thailand</span></div>
+          <div class="vs">vs</div>
+          <div class="right"><span class="name">Ayoub Yassine</span><span class="from">Morocco</span></div>
+        </div>
+        <div class="bout star-row">
+          <div class="tags"><span class="pill mt">MT</span><span class="wt">Fly</span></div>
+          <div><span class="name">Johan Ghazali</span><span class="from">Malaysia / USA</span></div>
+          <div class="vs">vs</div>
+          <div class="right"><span class="name">Diego Paez</span><span class="from">Colombia / USA</span></div>
+        </div>
+        <div class="bout star-row">
+          <div class="tags"><span class="pill kb">KB</span><span class="wt">Straw</span></div>
+          <div><span class="name">Prajanchai PK</span><span class="from">Thailand · champion, non-title</span></div>
+          <div class="vs">vs</div>
+          <div class="right"><span class="name">Wang Junguang</span><span class="from">China</span></div>
+        </div>
+
+        <h3 style="margin-top:1.6rem;">ONE Friday Fights 175 · from 8:30</h3>
+        <div class="bout">
+          <div class="tags"><span class="pill kb">KB</span><span class="wt">Straw</span></div>
+          <div><span class="name">Yang Guiyao</span><span class="from">China</span></div>
+          <div class="vs">vs</div>
+          <div class="right"><span class="name">Shosuke Iwanaga</span><span class="from">Japan</span></div>
+        </div>
+        <div class="bout">
+          <div class="tags"><span class="pill mma">MMA</span><span class="wt">Fly</span></div>
+          <div><span class="name">Ashok Bagade</span><span class="from">India</span></div>
+          <div class="vs">vs</div>
+          <div class="right"><span class="name">Yuto Shioya</span><span class="from">Japan</span></div>
+        </div>
+        <div class="bout">
+          <div class="tags"><span class="pill mt">MT</span><span class="wt">Straw</span></div>
+          <div><span class="name">Hatthep Sor Sasiwat</span><span class="from">Thailand</span></div>
+          <div class="vs">vs</div>
+          <div class="right"><span class="name">Pichai</span><span class="from">Thailand · Mor Rajabhatkorat</span></div>
+        </div>
+        <div class="bout">
+          <div class="tags"><span class="pill mma">MMA</span><span class="wt">Straw</span></div>
+          <div><span class="name">Javier Cabrera</span><span class="from">Spain</span></div>
+          <div class="vs">vs</div>
+          <div class="right"><span class="name">Sanjaya Hutagaol</span><span class="from">Indonesia</span></div>
+        </div>
+        <div class="bout">
+          <div class="tags"><span class="pill mt">MT</span><span class="wt">Straw</span></div>
+          <div><span class="name">Tepatip</span><span class="from">Thailand · Champkhaomootod</span></div>
+          <div class="vs">vs</div>
+          <div class="right"><span class="name">Chokpreecha PK</span><span class="from">Thailand</span></div>
+        </div>
+        <div class="bout">
+          <div class="tags"><span class="pill mt">MT</span><span class="wt">Fly</span></div>
+          <div><span class="name">Slatan Jitmuangnon</span><span class="from">Thailand</span></div>
+          <div class="vs">vs</div>
+          <div class="right"><span class="name">Babak Haghi</span><span class="from">Iran</span></div>
+        </div>
+        <div class="bout">
+          <div class="tags"><span class="pill mt">MT</span><span class="wt">Bantam</span></div>
+          <div><span class="name">Kampeetewada</span><span class="from">Thailand · Sitthikul</span></div>
+          <div class="vs">vs</div>
+          <div class="right"><span class="name">Anuar Cisneros</span><span class="from">Mexico</span></div>
+        </div>
+        <div class="bout">
+          <div class="tags"><span class="pill mt">MT</span><span class="wt">Atom</span></div>
+          <div><span class="name">Mahesuan</span><span class="from">Thailand · two recent stoppages</span></div>
+          <div class="vs">vs</div>
+          <div class="right"><span class="name">Bakjo Sitkhunma</span><span class="from">Thailand · unbeaten in ONE</span></div>
+        </div>
+        <div class="bout star-row">
+          <div class="tags"><span class="pill mt">MT</span><span class="wt">Fly · main</span></div>
+          <div><span class="name">Lamsing</span><span class="from">Thailand</span></div>
+          <div class="vs">vs</div>
+          <div class="right"><span class="name">Abdessamie Rhenimi</span><span class="from">Morocco</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="rules" class="wrap">
+      <p class="kicker">03 · The sports</p>
+      <h2>What is allowed, bout by bout</h2>
+      <p class="section-intro">Read the colored tag on the fight. Then use that column. The glove is the easiest tell from your seat: Muay Thai and MMA wear tiny open-finger 4 oz gloves. Kickboxing wears bigger closed 8 oz gloves.</p>
+      <div class="rules">
+        <article class="rule">
+          <h3>Muay Thai</h3>
+          <p class="meta">4 oz gloves · 3 × 3 minutes · 1 minute rest</p>
+          <ul class="weapons">
+            <li>Punches <span class="on">Yes</span></li>
+            <li>Kicks <span class="on">Yes</span></li>
+            <li>Knees <span class="on">Yes</span></li>
+            <li>Elbows <span class="on">Yes</span></li>
+            <li>Clinch and sweeps <span class="on">Yes</span></li>
+            <li>Ground fighting <span class="off">No</span></li>
+          </ul>
+        </article>
+        <article class="rule">
+          <h3>Kickboxing</h3>
+          <p class="meta">8 oz gloves · 3 × 3 minutes · 1 minute rest</p>
+          <ul class="weapons">
+            <li>Punches <span class="on">Yes</span></li>
+            <li>Kicks <span class="on">Yes</span></li>
+            <li>Knees <span class="on">Yes</span></li>
+            <li>Elbows <span class="off">Foul</span></li>
+            <li>Long clinch <span class="off">Broken up</span></li>
+            <li>Ground fighting <span class="off">No</span></li>
+          </ul>
+        </article>
+        <article class="rule">
+          <h3>MMA</h3>
+          <p class="meta">4 oz gloves · 3 × 5 minutes · 1 minute rest</p>
+          <ul class="weapons">
+            <li>Punches <span class="on">Yes</span></li>
+            <li>Kicks <span class="on">Yes</span></li>
+            <li>Knees and elbows <span class="on">Yes</span></li>
+            <li>Takedowns <span class="on">Yes</span></li>
+            <li>Ground striking <span class="on">Yes</span></li>
+            <li>Submissions <span class="on">A finish</span></li>
+          </ul>
+        </article>
+      </div>
+      <p class="note">A fight can end by knockout, by the referee or a corner stopping it, by three knockdowns in one round, or by four knockdowns in the bout. In the two MMA fights, a tap of the hand, or a fighter caught in a choke or a joint lock, is the same kind of ending. Three knockdowns do not apply there. If the striking fight goes the distance, three judges score every round. If an MMA fight goes the distance, those judges pick a winner of the whole bout, using damage, near-finishes, control, and takedowns.</p>
+
+      <div class="plates" style="margin-top: 1rem;">
+        <article class="plate">
+          <svg viewBox="0 0 640 390" role="img" aria-labelledby="limbTitle limbDesc">
+            <title id="limbTitle">The eight limbs</title>
+            <desc id="limbDesc">A fighter in stance. Four callouts mark the fist, elbow, knee, and shin. Each weapon exists on both sides, which is the eight limbs of Muay Thai.</desc>
+            <rect width="640" height="390" rx="12" fill="#1a1512"/>
+            <line x1="70" y1="352" x2="400" y2="352" stroke="#3a3128" stroke-width="2"/>
+            <g fill="none" stroke="#e2c27a" stroke-width="11" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M132 348 L168 268 L214 196"/>
+              <path d="M214 196 L292 262 L348 346"/>
+              <path d="M214 196 L236 112"/>
+              <path d="M228 124 L176 156 L150 104"/>
+              <path d="M236 120 L304 164 L368 132"/>
+            </g>
+            <circle cx="248" cy="78" r="26" fill="#1a1512" stroke="#e2c27a" stroke-width="8"/>
+            <g fill="#f4ecdf" stroke="#e25b45" stroke-width="3">
+              <circle cx="150" cy="104" r="9"/>
+              <circle cx="368" cy="132" r="9"/>
+            </g>
+            <g fill="#e25b45">
+              <circle cx="176" cy="156" r="6"/>
+              <circle cx="304" cy="164" r="6"/>
+              <circle cx="168" cy="268" r="6"/>
+              <circle cx="292" cy="262" r="6"/>
+              <circle cx="150" cy="308" r="5"/>
+              <circle cx="320" cy="304" r="5"/>
+            </g>
+            <g fill="none" stroke="#9a8d7c" stroke-width="1.5">
+              <path d="M368 132 C400 132, 410 70, 436 70"/>
+              <path d="M304 164 C360 164, 390 148, 436 148"/>
+              <path d="M292 262 C350 262, 390 226, 436 226"/>
+              <path d="M320 304 C370 304, 400 304, 436 304"/>
+            </g>
+            <g fill="#f4ecdf" font-family="Outfit, sans-serif" font-size="16">
+              <text x="446" y="66">Fists ×2</text>
+              <text x="446" y="144">Elbows ×2</text>
+              <text x="446" y="222">Knees ×2</text>
+              <text x="446" y="300">Shins ×2</text>
+            </g>
+            <g fill="#9a8d7c" font-family="Outfit, sans-serif" font-size="12">
+              <text x="446" y="84">Jab, cross, hook</text>
+              <text x="446" y="162">Short, and final</text>
+              <text x="446" y="240">In the clinch</text>
+              <text x="446" y="318">The kick, not the foot</text>
+            </g>
+          </svg>
+          <h3>Eight limbs</h3>
+          <p>Two fists, two elbows, two knees, two shins. Boxing is the fists alone. Kickboxing adds the kicks and the knees, then stops. Muay Thai is the full set. A legal throw in Muay Thai is a sweep or a trip, not a wrestling slam.</p>
+        </article>
+        <article class="plate">
+          <h3>What each limb is for</h3>
+          <div class="calls">
+            <div><b>Teep</b><span>A push kick to the hip or stomach. It buys space. It scores when it moves someone, not when it merely looks tidy.</span></div>
+            <div><b>Kick</b><span>Shin to thigh, ribs, or head. A limp step afterward is damage, even with no knockdown.</span></div>
+            <div><b>Clinch</b><span>Both hands tied up at the neck, knees coming up the middle. If nothing lands, the referee breaks it.</span></div>
+            <div><b>Elbow</b><span>The Lumpinee weapon. One clean one can open a cut and end the fight. Illegal in both kickboxing bouts tonight.</span></div>
+          </div>
+          <p style="margin-top:0.9rem;">Muay Thai bouts open with a thank-you to the teacher. Kickboxing and MMA do not. If they kneel, you are watching Muay Thai. If they only touch gloves, you are not.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="scoring" class="wrap">
+      <p class="kicker">04 · How to watch a round</p>
+      <h2>Give the winner 10. Give the other fighter 9, or 8.</h2>
+      <p class="section-intro">Striking rounds use the 10-point must system. Add the rounds up. A 10–8 round is the one you will still be describing in the taxi.</p>
+      <div class="scores">
+        <article class="ticket rare">
+          <div class="score">10–10</div>
+          <p>Almost even. Judges hate writing this. If you cannot separate them, you are allowed to.</p>
+        </article>
+        <article class="ticket">
+          <div class="score">10–9</div>
+          <p>The ordinary round. Somebody landed the cleaner, harder shots. That person gets the 10.</p>
+        </article>
+        <article class="ticket kd">
+          <div class="score">10–8</div>
+          <p>A knockdown, or a round that was not close. Two knockdowns can make it 10–7. The fight may already be over.</p>
+        </article>
+      </div>
+      <p class="note">Order of importance on a striking scorecard: knockdowns, damage, clean shots landed, then who was making the fight happen. In the two MMA bouts, ignore this ticket. Those judges pick a winner of the whole fight, not a 10–9 for each round.</p>
+
+      <div class="plates" style="margin-top:1rem;">
+        <article class="plate">
+          <h3>The band tells you the round</h3>
+          <p>The sarama sits ringside: a pi chawa oboe, a pair of drums, and small ching cymbals. The tune is the same idea all night. The speed is the information.</p>
+          <div class="tempo" aria-hidden="true">
+            <div>
+              <b>Round 1</b>
+              <div class="eq slow"><i style="height:18px"></i><i style="height:28px"></i><i style="height:16px"></i><i style="height:24px"></i><i style="height:14px"></i><i style="height:22px"></i><i style="height:18px"></i></div>
+              <span class="from">Long, careful, a lot of teeps.</span>
+            </div>
+            <div>
+              <b>Round 2</b>
+              <div class="eq mid"><i style="height:24px"></i><i style="height:34px"></i><i style="height:20px"></i><i style="height:36px"></i><i style="height:22px"></i><i style="height:30px"></i><i style="height:26px"></i></div>
+              <span class="from">Harder kicks. Someone picks a side.</span>
+            </div>
+            <div>
+              <b>Round 3</b>
+              <div class="eq fast"><i style="height:30px"></i><i style="height:40px"></i><i style="height:26px"></i><i style="height:42px"></i><i style="height:28px"></i><i style="height:38px"></i><i style="height:32px"></i></div>
+              <span class="from">The sprint. This is the round that swings a close fight.</span>
+            </div>
+          </div>
+        </article>
+        <article class="plate">
+          <h3 class="thai" style="color: var(--cream); font-size: 1.45rem;">ไหว้ครู · the wai khru</h3>
+          <p>Only before Muay Thai. It takes about a minute. The dance is a thank-you, performed for the teacher who taught the fighter.</p>
+          <ol class="steps">
+            <li><em>1</em><span>He walks the rope and seals the ring, usually counterclockwise, touching the corners.</span></li>
+            <li><em>2</em><span>Three bows in the center, for his teacher and the teachers before that one.</span></li>
+            <li><em>3</em><span>The ram muay, a short dance that belongs to his camp. You do not need to decode it.</span></li>
+            <li><em>4</em><span>His trainer lifts off the mongkon, the blessed headband. Nobody else handles it. The prajioud armbands stay on.</span></li>
+          </ol>
+        </article>
+      </div>
+    </section>
+
+    <section id="arrival" class="wrap">
+      <p class="kicker">05 · The building</p>
+      <h2>Be at Ram Inthra before you are anywhere else.</h2>
+      <div class="go">
+        <article class="warn">
+          <h3>Two Lumpinees. Only one has a fight tonight.</h3>
+          <div class="pin">
+            <div>
+              <b>Wrong</b>
+              <span>Lumphini Park, Rama IV, the name on the tourist map. The old stadium is not where this card is.</span>
+            </div>
+            <div class="good">
+              <b>Right</b>
+              <span>Lumpinee Boxing Stadium, 6 Ram Inthra Road, Bang Khen, Bangkok 10220. Search “Ramintra”. Grab knows that spelling.</span>
+            </div>
+          </div>
+          <p style="margin-top:0.8rem;color:var(--dim);">MRT Pink Line to Ram Inthra 3, station PK17. From Sukhumvit, take the BTS to Wat Phra Sri Mahathat and change there. A Grab from the center is listed around 250–400 baht and 20–35 minutes, before Friday traffic. Leave a cushion.</p>
+        </article>
+        <article class="plate">
+          <h3>Seats and the room</h3>
+          <p>Listed prices for this date. The grandstand still sees the whole ring.</p>
+          <div class="prices">
+            <div><b>฿1,000</b><span class="from">CAT 3 · grandstand</span></div>
+            <div><b>฿2,400</b><span class="from">CAT 2</span></div>
+            <div><b>฿3,400</b><span class="from">CAT 1 · behind ringside</span></div>
+          </div>
+          <p style="margin-top:0.8rem;">Ringside is sold as a separate lower-club seat. The stadium page does not print that price. Box office 02-522-6843, and Klook. All ages. One ticket, both shows.</p>
+        </article>
+      </div>
+      <div class="remember" style="margin-top:0.9rem;">
+        <article>
+          <h3>During the bows</h3>
+          <p>Stay in your seat and keep your voice down until the mongkon comes off. If an anthem plays at the start of the night, stand. After the bell, shout all you want.</p>
+        </article>
+        <article>
+          <h3>Between rounds</h3>
+          <p>You will hear numbers yelled in Thai. That is fans pricing bets with each other. It is part of the room. One minute, then the band starts again.</p>
+        </article>
+        <article>
+          <h3>Corners</h3>
+          <p>Red and blue are just the two corners. The color does not tell you who is favored, and it does not tell you who deserves the cheer.</p>
+        </article>
+        <article>
+          <h3>The two MMA fights</h3>
+          <p>A takedown is the sport, not a stall. Watch the hips and the hands. A trapped arm or a neck is how those fights end before the clock does.</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="watch" class="wrap">
+      <p class="kicker">06 · If you are texting someone the link</p>
+      <h2>Same fights, four clocks.</h2>
+      <div class="watch-grid">
+        <div>
+          <p class="lede" style="font-size:1.05rem;">The early show is members-only on live.onefc.com. The 8:30 main card is on ONE’s YouTube channel, Facebook, and watch.onefc.com, with geo-blocks in some countries. In Thailand that main card is also on Channel 7 HD. In the US and Canada it is on beIN at 9:30 am Eastern. In the UK it is on Sky Sports at 2:30 pm.</p>
+          <p style="margin-top:0.8rem;"><a href="https://www.onefc.com/news/how-to-watch-the-inner-circle-35-and-one-friday-fights-175-live-on-october-16/">ONE’s country-by-country listings</a> · <a href="https://www.onefc.com/events/one-friday-fights-175/">Official event page</a></p>
+        </div>
+        <div class="clocks" aria-label="Start times">
+          <div><span>Bangkok</span><b>6:30 / 8:30 pm</b></div>
+          <div><span>London</span><b>12:30 / 2:30 pm</b></div>
+          <div><span>New York</span><b>7:30 / 9:30 am</b></div>
+          <div><span>Los Angeles</span><b>4:30 / 6:30 am</b></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="wrap">
+    <p>Written the day of the show from ONE’s event page, rulebook, and news desk, the Lumpinee Stadium listing, and the beIN card notes. Bout order follows the stadium running order, earliest first. Cards move. If a name changes, the rules, the ritual, and the building do not.</p>
+    <ul>
+      <li><a href="https://www.onefc.com/events/one-friday-fights-175/">ONE Friday Fights 175 &amp; The Inner Circle 35</a></li>
+      <li><a href="https://www.onefc.com/martial-arts/">ONE rulebook and weight classes</a></li>
+      <li><a href="https://www.onefc.com/news/prajanchai-booked-to-return-against-wang-junguang-in-kickboxing-bout-at-the-inner-circle-35/">Prajanchai’s return, in ONE’s words</a></li>
+      <li><a href="https://lumpineestadium.com/fights/one-friday-fights-16-october-2026">Lumpinee Stadium event page</a> — doors, address, Pink Line, CAT 3 price</li>
+      <li><a href="https://www.lumpinee-rajadamnern.com/event-details/one-friday-fights-175-the-inner-circle-35-2026-10-16-18-30">Ticket listing for this date</a> — CAT 1, 2, and 3 prices</li>
+    </ul>
+  </footer>
+</body>
+</html>
